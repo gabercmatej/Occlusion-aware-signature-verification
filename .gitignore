@@ -1,0 +1,19 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Confidential company material must remain local.
+data/company/*
+!data/company/README.md
+
+# Large/local artifacts.
+models/*
+!models/README.md
+experiments/results/*
+!experiments/results/README.md
+
+# Keep publisher PDFs local; track the index and reading notes instead.
+literature/papers/*.pdf
+!literature/papers/README.md
