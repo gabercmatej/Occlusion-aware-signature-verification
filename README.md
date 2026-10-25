@@ -1,41 +1,45 @@
 # Occlusion-Aware Signature Verification
 
-Research workspace for a bachelor thesis on offline handwritten signature verification when rubber stamps partially occlude signatures on financial and contractual documents.
+Bachelor thesis research on verifying partially stamped offline signatures against genuine references.
 
-This is a research project, not an application. The initial goal is to understand the literature, define defensible experiments, and establish reliable evaluation before building a production interface.
+**Status:** literature study and first professor proposal preparation. Supervisor approval is pending; no trained verifier, completed experiments or performance results are claimed. The proposal package is targeted for October 29, 2026, before Friday departure. Implementation follows supervisor approval.
 
-## Start here
+## Research direction
 
-1. Read [RESEARCH.md](RESEARCH.md) for the current research direction.
-2. Read [literature/START_HERE.md](literature/START_HERE.md) and the downloaded starter papers.
-3. Record every paper in [literature/literature_matrix.csv](literature/literature_matrix.csv). A formatted Excel view is available at `literature/literature_matrix.xlsx`.
-4. Put open questions in [QUESTIONS.md](QUESTIONS.md), without forcing early answers.
-5. Register experiments before running them in [EXPERIMENTS.md](EXPERIMENTS.md).
+The working question is whether visibility-aware comparison can improve verification under stamp occlusion without reconstructing potentially unreliable hidden strokes. Candidate approaches include direct verification, regional reliability weighting and a bounded restoration comparison. Architecture and scope remain provisional until reviewed with the supervisor.
 
-## Research principles
+Evaluation should control writer splits, reference counts and stamp conditions, select operating thresholds on validation data, and report false acceptance and rejection alongside EER and runtime. Visually successful restoration alone does not establish preserved identity evidence.
 
-- Keep train, validation, and test writers disjoint for writer-independent evaluation.
-- Report security-relevant metrics such as FAR, FRR, EER, ROC/AUC, and TAR at a fixed low FAR.
-- Treat stamp removal as a hypothesis, not as the assumed solution.
-- Compare restoration, mask-based verification, and direct occlusion-aware verification.
-- Measure both residual stamp content and lost signature evidence.
-- Prefer abstention and human review when the visible evidence is insufficient.
-- Never invent or reconstruct hidden strokes without explicitly measuring the security risk this creates.
+## Reading guide
 
-## Project map
+- [Literature overview and paper links](literature/START_HERE.md)
+- [Paper index and access information](literature/papers/README.md)
+- [Reading notes](literature/notes/README.md)
+- [Glossary](literature/notes/GLOSSARY.md)
+- [Literature matrix](literature/literature_matrix.csv)
 
-- `literature/`: papers, structured reading notes, and the literature matrix.
-- `data/`: public, confidential company, and synthetic datasets. See `data/README.md` before adding anything.
-- `notebooks/`: exploration and baseline experiments only.
-- `src/`: reusable research code, separated by responsibility.
-- `experiments/`: configurations, results, and figures.
-- `models/`: local model checkpoints.
-- `tests/`: tests for reusable preprocessing, data, and evaluation code.
+All nine papers have study notes. Notes distinguish reported findings from proposed extensions and retain protocol caveats. Some study used guided explanations; note existence alone is not proof of full-paper reading. Publisher PDFs are kept locally because redistribution permission is not established for every paper. The index provides DOI links instead.
 
-## Data safety
+## Proposal and progress
 
-Company documents, contracts, signatures, and derived identifying material must not be committed to a public repository. The entire `data/company/` directory is ignored by Git except for its safety note. Keep a written data-governance record covering authorization, anonymization, retention, and deletion before using company data.
+- [Live plan and progress](PLAN.md)
+- [Initial concept brief](proposal/CONCEPT_BRIEF.md)
+- [Proposal outline and supervisor questions](proposal/OUTLINE.md)
+- [Research direction](RESEARCH.md), [question backlog](QUESTIONS.md), [proposed experiments](EXPERIMENTS.md)
 
-## First-week outcome
+The intended first package is a 2–4-page proposal plus references, a simple method diagram, feasible data fallback, evaluation plan and focused supervisor questions. The student reviews and sends it personally. This repository is supporting preparation, not an approved proposal or finished system.
 
-At the end of the first week, you should be able to explain the verification task, writer-dependent versus writer-independent evaluation, skilled forgeries, metric learning, stamp separation versus restoration, forensic evidence preservation, and FAR/FRR/EER without relying on an implementation.
+## Folder structure
+
+```text
+literature/      Paper index, reading sequence, notes, glossary and evidence matrix
+proposal/        Concept brief and proposal outline; future drafts
+data/           Data guidance; company material remains excluded
+notebooks/      Exploratory notebook scaffolds
+src/            Future datasets, preprocessing, segmentation and verification code
+experiments/    Configuration, figures and result scaffolding
+models/         Local model storage guidance
+tests/          Future validation scaffolding
+```
+
+Folder scaffolding does not imply implemented methods. Public/synthetic data form the proposed feasible core; company-data access and use remain conditional. Confidential data, embeddings and identifying model artifacts must remain restricted. No company data are included in this repository.

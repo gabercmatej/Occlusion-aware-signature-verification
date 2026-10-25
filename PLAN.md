@@ -1,0 +1,58 @@
+# Thesis daily plan - 17-31 October 2026
+
+**Goal (revised October 25):** finish a credible first professor proposal package by Thursday evening, October 29, ready for the reader to send personally before leaving on Friday, October 30. October 30 is a small buffer, not the main workday; October 31 remains the original outer deadline. This is preparation, not an approved implementation phase.
+
+**Start here each day:** find today's row; use the assistant to understand the material and save the named output. Default 90-150 minutes, with a 30-minute minimum on a busy day. Do not mark reading complete just because an AI note exists.
+
+**Source of truth:** this file controls the dates and tasks. `literature/START_HERE.md` controls reading order; `literature/literature_matrix.csv` tracks evidence. The PDF is a convenient snapshot.
+
+## Current status — updated 25 October
+
+- Reader explicitly confirms all nine papers studied through reading and guided explanations. All nine notes exist; do not interpret this as nine cover-to-cover readings.
+- P3/P4 notes and comparison were saved October 24; P6/P7/P8 notes were saved October 25. Historical missed-day checkboxes below preserve when work slipped; they are not instructions to repeat completed reading.
+- **Still pending:** full glossary reread; final matrix reconciliation; short related-work synthesis; data/access feasibility; experiment design and research scope; proposal draft, review and final package.
+- No experiments or results exist. Supervisor approval remains pending. No implementation or model training until approval. Sending is performed personally by the reader.
+
+| Done | Date | Read / focus | Task | Saved output |
+|---|---|---|---|---|
+| [x] | Sat 2026-10-17 | 01 / P1 | Read P1 with the assistant; draw clean references -> stamped query -> score. | P1 note with three page-linked findings, one caveat and a 150-word problem paragraph. |
+| [ ] | Sun 2026-10-18 | 02 / F0, then 03 / P5 | Read F0 selectively, then P5; explain WI versus WD, Siamese comparison, genuine variation and skilled forgery. | F0 and P5 notes plus a one-page glossary; explain the pipeline aloud. |
+| [x] | Mon 2026-10-19 | Carryover: 02 / F0 notes, then 03 / P5; 04 / P2 if time | First finish F0 discussion and concise notes, then read P5 with the assistant and save its note. Include the WI/WD and Siamese glossary and explain the pipeline aloud. Read P2 next if time permits; otherwise explicitly reschedule it. | F0 and P5 notes plus a one-page glossary and pipeline explanation; if P2 is reached, its note and architecture sketch with three source locations. |
+| [ ] | Tue 2026-10-20 | 05 / P3 | Read P3, especially EA-RMSE and real versus synthetic data. | P3 note; distinguish stamp residue, missing content and lost signature evidence. |
+| [ ] | Wed 2026-10-21 | Carryover: 05 / P3 first; then 06 / P4 if time | Read P3 with the assistant, focusing on EA-RMSE and real versus synthetic data; save its note. Then read P4 and compare its task and constraints with P3 if time permits; otherwise explicitly reschedule P4. | P3 note distinguishing stamp residue, missing content and lost signature evidence; if P4 is reached, P4 note and a short GAN/diffusion comparison with no unsupported security claim. |
+| [ ] | Thu 2026-10-22 | 07 / P6 | Read P6; explain region scores and their fusion. | P6 note and a proposed visibility-weighting experiment with a control. |
+| [ ] | Fri 2026-10-23 | 08 / P7, then 09 / P8 | Survey P7/P8; focus on references, splits and final classifier. Synthesize week one. | P7/P8 starter discussion notes; nine matrix rows triaged; 300-word related-work synthesis. |
+| [ ] | Sat 2026-10-24 | Data feasibility | Check benchmark licenses/access and list company writer/reference/label questions. | One-page data plan with a public/synthetic fallback; no confidential data required. |
+| [ ] | Sun 2026-10-25 | Experiment design | Specify baseline, writer-disjoint splits, controlled stamp occlusion and direct/mask/restoration comparisons. | One-page experiment table; primary metric and threshold policy. |
+| [ ] | Mon 2026-10-26 | Scope + data + experiment skeleton | Reread glossary for 15–20 minutes; settle one primary question and at most two secondary questions with the reader. Check candidate benchmark access/terms using local evidence and record unknowns. Define the public/synthetic fallback, references, writer/stamp splits, baseline, visibility-aware comparison, optional restoration and validation-only threshold policy. | One compact proposal-planning sheet: problem paragraph, questions, data feasibility and one-page experiment table; unresolved supervisor decisions listed. |
+| [ ] | Tue 2026-10-27 | Complete proposal draft | Use proposal/OUTLINE.md and checked notes to draft 2–4 pages plus references. Reconcile all nine matrix rows and incorporate a roughly 300-word related-work synthesis. Flag access uncertainty rather than invent feasibility. | Complete proposal v0.1 with problem, evidence, data fallback, methods, evaluation, risks, proposed timeline and references; reconciled matrix. |
+| [ ] | Wed 2026-10-28 | Review + professor package | Review claims, novelty, feasibility, writer leakage, reference counts, thresholds and scope. Verify citations/pages, add a simple method diagram, prepare six professor questions and a five-minute explanation. | Revised proposal v0.9, method diagram, concise annotated bibliography and professor questions. |
+| [ ] | Thu 2026-10-29 | Finalize before Friday departure | Check faculty format, source accuracy, consistency and readability; proofread and export. Reader approves the final wording and sends personally when ready; do not send automatically. | Ready-to-send proposal PDF and editable source, references and meeting agenda; sending status recorded only after explicit confirmation. |
+| [ ] | Fri 2026-10-30 | Departure buffer / personal sending | Only small final corrections if needed. Personally send before departure if not already sent; record version/date and next action after confirmation. | Confirmed personal sending record, or explicit remaining blocker; no implementation without supervisor approval. |
+| [ ] | Sat 2026-10-31 | Original deadline / status check | Check confirmed sending status and any professor response. If already sent, no duplicate submission or new work is required. Do not extend reminders beyond this window without a new schedule. | Accurate sending/next-action status; implementation begins only after supervisor green light. |
+
+## Daily close-out
+
+Append a dated entry here: output saved (with link), what I can now explain, one unresolved question, tomorrow's first action. Mark a row complete only after its output exists.
+
+## Progress log
+
+- 2026-10-16: all eight core papers plus the F0 foundation paper are local; starter notes prepared by the assistant. Personal reading and proposal work are not yet marked complete. Supervisor approval pending.
+
+- 2026-10-17: P1 full reading reported by the reader; concepts discussed and understanding confirmed. Saved [P1 revision note](literature/notes/01-P1-real-world-verification.md) with page-linked findings, caveats, a reviewed 150-word working problem paragraph and the reader-confirmed [pipeline figure](literature/notes/assets/01-P1-feature-extraction-comparison.png). Reader confirmed the paragraph and requested completion updates. Can explain writer-independent enrollment, cleaning versus signature evidence, CNN features, cosine comparison and threshold tradeoffs. Open research question: can stamp interference be suppressed without losing identity-bearing strokes? Updated the literature matrix. Tomorrow: selectively read F0, then P5; focus on shared features versus writer-specific decisions and Siamese comparison. Supervisor approval remains pending.
+
+- 2026-10-18: Reader reports today’s work could not be completed and explicitly requests F0 notes and P5 reading on October 19. F0 abstract, figures and tables were viewed and an assistant explanation was provided; understanding and notes are not yet confirmed complete. October 18 remains incomplete. October 19 priority: finish F0 notes, then P5 reading/discussion and notes, with the planned glossary and pipeline explanation; P2 follows if time permits and otherwise needs explicit rescheduling. Protect the October 27 proposal draft, October 30 proofreading and October 31 proposal target.
+
+- 2026-10-19: Day three completed at the reader's explicit request following explanations back and glossary approval. Saved [F0 notes](literature/notes/02-F0-foundation-feature-learning.md), [P5 notes](literature/notes/03-P5-spatial-transformer.md), [P2 notes and architecture sketch with three source anchors](literature/notes/04-P2-HTCSigNet.md), and [glossary covering P1/F0/P5/P2](literature/notes/GLOSSARY.md), expanded with SPD-Conv and SCConv. F0 reading confirmed; P5 study was summary-based; P2 study and explanation scope are recorded in its note. Corrected focal loss as training reweighting rather than inference acceleration and clarified personal-SVM decisions as writer dependent. Updated all three matrix rows. October 18 carryover outputs are resolved on October 19; original missed-day row is retained as history. Open question: do global/local features remain reliable under stamp occlusion and restoration? Tomorrow: P3, focusing on EA-RMSE and real versus synthetic data, separating stamp residue from lost signature evidence. Supervisor approval remains pending.
+
+- 2026-10-20: Reader explicitly reports unable to do today’s P3 task and requests moving it to October 21. October 20 remains incomplete. Tomorrow’s priority is P3 reading/discussion and notes; P4 follows if time permits, otherwise requires explicit rescheduling. No reading or understanding inferred from prepared material. Protect the October 27 proposal draft, October 30 proofreading and October 31 proposal target.
+
+- 2026-10-25: Reader confirms all papers studied and requests a compressed proposal schedule before Friday departure. All nine note files verified. Glossary full reread remains pending. Deferred data feasibility and experiment design move into October 26; complete draft protected on October 27, review October 28, ready-to-send package October 29. No unconfirmed daily outputs marked done.
+
+## If a day slips
+
+Carry forward one essential unfinished output. Reduce optional deep dives into P7/P8 or architecture details. Protect the full proposal draft on 27 October and finalization on 29 October. The minimum package is a clear problem, a source-grounded short literature review, one question, a feasible data fallback and an evaluation plan.
+
+## Daily reminders
+
+Requested schedule: 08:00 Europe/Ljubljana each day from 17 through 31 October 2026 in a separate thesis-reminder chat. The reminder reads this file and the progress log; it does not infer completion or change checkboxes. Do not continue reminders after the proposal window without a new schedule.

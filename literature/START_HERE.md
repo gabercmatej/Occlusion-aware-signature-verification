@@ -1,31 +1,27 @@
-# Starter Reading Set
+# Start here: literature
 
-The `papers/` folder intentionally contains a small set, not a PDF dump. Read in this order and update the literature matrix and note file after each paper.
+All eight core papers and the additional F0 foundation paper are downloaded. File prefixes 01-09 are the **reading sequence**; P1-P8 remain stable roadmap reference IDs. F0 is supplementary foundational reading.
 
-## Downloaded starter papers
+| Read order | Stable ID | Paper | Main purpose |
+|---|---|---|---|
+| 01 | P01 | [real-world-verification](papers/01-P1-real-world-verification.pdf) | Real-world problem and controls |
+| 02 | F0 | [foundation-feature-learning](papers/02-F0-foundation-feature-learning.pdf) | WI features versus WD decisions |
+| 03 | P05 | [spatial-transformer](papers/03-P5-spatial-transformer.pdf) | Siamese / spatial-transformer basics |
+| 04 | P02 | [HTCSigNet](papers/04-P2-HTCSigNet.pdf) | Local and global representations |
+| 05 | P03 | [real-document-stamp-removal](papers/05-P3-real-document-stamp-removal.pdf) | Real stamps and evidence-loss metrics |
+| 06 | P04 | [SERGAN](papers/06-P4-SERGAN.pdf) | GAN restoration comparison |
+| 07 | P06 | [region-based-metric-learning](papers/07-P6-region-based-metric-learning.pdf) | Local region matching |
+| 08 | P07 | [riemannian-meta-learning](papers/08-P7-riemannian-meta-learning.pdf) | Reference-set geometry; survey first |
+| 09 | P08 | [CCASigNet](papers/09-P8-CCASigNet.pdf) | CCA features and WD classifiers; survey first |
 
-1. **Hafemann, Sabourin, and Oliveira (2017), _Learning features for offline handwritten signature verification using deep convolutional neural networks_.** Read this for the foundational writer-independent feature-learning formulation, person-disjoint validation, skilled forgeries, and benchmark protocols.
-2. **Xiao and Wu (2025), _Learning features for offline handwritten signature verification using spatial transformer network_.** Read this for a recent two-stage Siamese-style system, attention to discriminative regions, and difficult skilled-forgery cases.
+## One session, one useful output
 
-## Very relevant, linked but not downloaded automatically
+1. Read the abstract and figures yourself for 10-15 minutes.
+2. Ask the assistant to explain the confusing parts using the local PDF.
+3. Discuss the split, references, forgeries, threshold and limitations.
+4. Save short paraphrases, tiny exact excerpts and source pages in the existing note.
+5. Explain the idea back; update the matrix and the day in `../PLAN.md`.
 
-These papers are already recorded in the literature matrix. Use the open publisher page, your university library, or an author manuscript as indicated.
+The notes have assistant-prepared evidence, not completed personal reading. Start with P1 on October 17. F0 and P5 share October 18, so read F0 selectively. Survey P7/P8 on October 23; defer their full mathematical treatment if it threatens the proposal deadline.
 
-- **Lee et al. (2026), _Stamp removal from real documents: A diffusion-based approach with EA-RMSE evaluation_:** read this first for the real-versus-synthetic stamp gap and for an evaluation metric that separates residual stamp content from destroyed background content. The article is open access, but the publisher required an interactive download challenge during setup. DOI: <https://doi.org/10.1016/j.array.2026.100855>
-- **HTCSigNet (2025):** essential follow-up for local CNN features plus global transformer features. DOI: <https://doi.org/10.1016/j.patcog.2024.111146>
-- **SERGAN (2024):** important GAN baseline for simultaneous stamp extraction and removal. DOI: <https://doi.org/10.1016/j.dsp.2023.104358>
-- **Enhanced diffusion-based stamp removal (2024):** useful predecessor to the 2026 real-document paper. DOI: <https://doi.org/10.1016/j.compeleceng.2024.109738>
-- **Metric meta-learning with Riemannian embeddings (2025):** advanced follow-up after the Siamese and foundational papers. DOI: <https://doi.org/10.1016/j.eswa.2024.125470>
-
-## Reading discipline
-
-For each paper, record:
-
-- the exact task and evaluation protocol;
-- whether the split is writer-disjoint;
-- whether skilled forgeries and stamp occlusion are present;
-- what input information preprocessing removes;
-- the most important weakness for this thesis;
-- one experiment the paper enables.
-
-Do not compare headline EER values until you have checked that datasets, numbers of reference signatures, forgery types, and split protocols are comparable.
+See [note-taking instructions](notes/README.md), [the live plan](../PLAN.md), and [the matrix](literature_matrix.csv). The historical spreadsheet has been archived; the CSV is the current matrix. All PDF links in this guide are local.

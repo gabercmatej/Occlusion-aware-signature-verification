@@ -1,5 +1,7 @@
 # Research Direction
 
+> Current phase (16 October 2026): literature understanding and first professor proposal. Follow [PLAN.md](PLAN.md). All core PDFs are local; implementation and the experiments below remain proposed until supervisor approval. The primary comparison is direct versus visibility-aware verification; restoration and other advanced methods are conditional extensions. No study results are claimed.
+
 ## Status
 
 Version 0.1. This is a working research direction, not a final thesis proposal.
@@ -54,7 +56,7 @@ Main advantage: the system can optimize the actual verification objective instea
 
 ## Primary comparison
 
-Compare restoration, mask-based verification, and direct occlusion-aware verification under controlled occlusion severity. Measure verification performance, calibration, abstention behavior, residual stamp content, and loss of genuine signature evidence.
+After supervisor approval, begin with direct versus mask-aware verification under controlled occlusion severity using matched data and enrollment conditions. Add a restoration comparator if feasible. Calibration, abstention, real-data transfer and heavier architectures are secondary extensions selected with the supervisor, not mandatory October deliverables.
 
 ## Initial hypotheses
 
