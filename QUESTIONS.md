@@ -1,5 +1,7 @@
 # Research Questions
 
+> Current phase (16 October 2026): literature understanding and first professor proposal. Follow [PLAN.md](PLAN.md). All core PDFs are local; implementation and the experiments below remain proposed until supervisor approval. The primary comparison is direct versus visibility-aware verification; restoration and other advanced methods are conditional extensions. No study results are claimed.
+
 Add questions freely. Do not force early answers; link answers to evidence, experiments, or literature notes later.
 
 ## Stamp and signature separation

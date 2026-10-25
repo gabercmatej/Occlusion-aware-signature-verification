@@ -1,5 +1,7 @@
 # Experiment Registry
 
+> Current phase (16 October 2026): literature understanding and first professor proposal. Follow [PLAN.md](PLAN.md). All core PDFs are local; implementation and the experiments below remain proposed until supervisor approval. The primary comparison is direct versus visibility-aware verification; restoration and other advanced methods are conditional extensions. No study results are claimed.
+
 Register an experiment before running it. Give each experiment a stable ID and keep the configuration, outputs, and interpretation linked.
 
 ## Template
