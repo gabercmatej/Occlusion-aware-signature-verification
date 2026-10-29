@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="1900" height="1020" preserveAspectRatio="xMinYMin meet" viewBox="0 0 1900 1020" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="1900" height="1020"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-1020)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="0" y="0" width="1900" height="1020" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<rect x="20" y="850" width="340" height="140" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="64.3486328125" y="948.0500000000001" style="font-family: Arial; font-size: 33px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1896) scale(1,-1)">Clean references</text>
+			<text x="57.009033203125" y="908.45" style="font-family: Arial; font-size: 33px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1816) scale(1,-1)">Separate samples</text>
+			<text x="69.859375" y="868.85" style="font-family: Arial; font-size: 33px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1737) scale(1,-1)">Natural variation</text>
+			<rect x="500" y="850" width="490" height="140" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="549.8857421875" y="929.75" style="font-family: Arial; font-size: 39px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1859) scale(1,-1)">Normalize and encode</text>
+			<text x="537.955322265625" y="882.95" style="font-family: Arial; font-size: 39px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1765) scale(1,-1)">Shared signature model</text>
+			<rect x="1140" y="850" width="735" height="140" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="1350.15966796875" y="929.25" style="font-family: Arial; font-size: 37px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1858) scale(1,-1)">Reference features</text>
+			<text x="1189.748046875" y="884.85" style="font-family: Arial; font-size: 37px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1769) scale(1,-1)">Whole image or corresponding regions</text>
+			<path d="M 374,920 L 485,920 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="485 920, 471.6951 913.0733, 471.6951 926.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<path d="M 1005,920 L 1125,920 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1125 920, 1111.695 913.0733, 1111.695 926.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="20" y="488" width="340" height="150" rx="13" ry="13" style="stroke: rgb(47%,14%,18%); stroke-linecap: butt; stroke-width: 3; fill: rgb(98%,93%,94%); fill-rule: evenodd;"/>
+			<text x="57.756103515625" y="572.75" style="font-family: Arial; font-size: 39px;fill: rgb(47%,14%,18%); stroke:none;" transform="translate(0,1145) scale(1,-1)">Stamped query</text>
+			<text x="46.920654296875" y="525.95" style="font-family: Arial; font-size: 39px;fill: rgb(47%,14%,18%); stroke:none;" transform="translate(0,1051) scale(1,-1)">Original retained</text>
+			<rect x="500" y="488" width="490" height="150" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="549.8857421875" y="572.75" style="font-family: Arial; font-size: 39px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1145) scale(1,-1)">Normalize and encode</text>
+			<text x="549.895263671875" y="525.95" style="font-family: Arial; font-size: 39px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1051) scale(1,-1)">Same signature model</text>
+			<path d="M 374,563 L 485,563 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="485 563, 471.6951 556.0733, 471.6951 569.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<path d="M 744,837 L 744,652 Z" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; stroke-dasharray: 10, 8;"/>
+			<text x="775" y="742.8" style="font-family: Arial; font-size: 32px;fill: rgb(17%,40%,55%); stroke:none;" transform="translate(0,1485) scale(1,-1)">Shared parameters</text>
+			<rect x="1140" y="488" width="735" height="150" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="1221.349609375" y="572.5" style="font-family: Arial; font-size: 38px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1145) scale(1,-1)">Whole-image or regional similarity</text>
+			<text x="1258.26416015625" y="526.9" style="font-family: Arial; font-size: 38px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1053) scale(1,-1)">Compare with each reference</text>
+			<path d="M 1005,563 L 1125,563 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1125 563, 1111.695 556.0733, 1111.695 569.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<path d="M 1510,837 L 1510,652 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1510 652, 1503.073 665.3049, 1516.927 665.3049" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="430" y="295" width="545" height="120" rx="13" ry="13" style="stroke: rgb(39%,46%,50%); stroke-linecap: butt; stroke-width: 3; fill: rgb(100%,100%,100%); fill-rule: evenodd; stroke-dasharray: 10, 7;"/>
+			<text x="545.4130859375" y="364.0" style="font-family: Arial; font-size: 36px;fill: rgb(39%,46%,50%); stroke:none;" transform="translate(0,728) scale(1,-1)">Optional restoration</text>
+			<text x="466.337890625" y="320.8" style="font-family: Arial; font-size: 36px;fill: rgb(39%,46%,50%); stroke:none;" transform="translate(0,641) scale(1,-1)">Evaluate one feasible cleaner</text>
+			<path d="M 380,563 L 400,563 Z" style="stroke: rgb(39%,46%,50%); stroke-linecap: butt; stroke-width: 3; stroke-dasharray: 9, 6;"/>
+			<path d="M 400,563 L 400,355 Z" style="stroke: rgb(39%,46%,50%); stroke-linecap: butt; stroke-width: 3; stroke-dasharray: 9, 6;"/>
+			<path d="M 400,355 L 415,355 Z" style="stroke: rgb(39%,46%,50%); stroke-linecap: butt; stroke-width: 3; stroke-dasharray: 9, 6;"/>
+			<polygon points="415 355, 401.6951 348.0733, 401.6951 361.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,46%,50%); fill-rule: evenodd;"/>
+			<path d="M 990,355 L 1040,355 Z" style="stroke: rgb(39%,46%,50%); stroke-linecap: butt; stroke-width: 3; stroke-dasharray: 9, 6;"/>
+			<path d="M 1040,355 L 1040,452 Z" style="stroke: rgb(39%,46%,50%); stroke-linecap: butt; stroke-width: 3; stroke-dasharray: 9, 6;"/>
+			<path d="M 1040,452 L 780,452 Z" style="stroke: rgb(39%,46%,50%); stroke-linecap: butt; stroke-width: 3; stroke-dasharray: 9, 6;"/>
+			<path d="M 780,452 L 780,474 Z" style="stroke: rgb(39%,46%,50%); stroke-linecap: butt; stroke-width: 3; stroke-dasharray: 9, 6;"/>
+			<polygon points="780 474, 786.9267 460.6951, 773.0733 460.6951" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,46%,50%); fill-rule: evenodd;"/>
+			<rect x="20" y="118" width="470" height="135" rx="13" ry="13" style="stroke: rgb(47%,14%,18%); stroke-linecap: butt; stroke-width: 3; fill: rgb(98%,93%,94%); fill-rule: evenodd;"/>
+			<text x="84.92285156249997" y="194.50000000000003" style="font-family: Arial; font-size: 36px;fill: rgb(47%,14%,18%); stroke:none;" transform="translate(0,389) scale(1,-1)">Estimate interference</text>
+			<text x="69.86718749999997" y="151.30000000000004" style="font-family: Arial; font-size: 36px;fill: rgb(47%,14%,18%); stroke:none;" transform="translate(0,302) scale(1,-1)">and usable handwriting</text>
+			<path d="M 190,475 L 190,268 Z" style="stroke: rgb(47%,14%,18%); stroke-linecap: butt; stroke-width: 3;"/>
+			<polygon points="190 268, 183.0733 281.3049, 196.9267 281.3049" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(47%,14%,18%); fill-rule: evenodd;"/>
+			<rect x="1140" y="170" width="735" height="150" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="1218.3310546875" y="254.00000000000003" style="font-family: Arial; font-size: 36px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,508) scale(1,-1)">Global score / equal regional mean /</text>
+			<text x="1248.3720703125" y="210.80000000000004" style="font-family: Arial; font-size: 36px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,421) scale(1,-1)">visibility-weighted regional mean</text>
+			<path d="M 1510,474 L 1510,335 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1510 335, 1503.073 348.3049, 1516.927 348.3049" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<path d="M 505,186 L 1090,186 Z" style="stroke: rgb(47%,14%,18%); stroke-linecap: butt; stroke-width: 3;"/>
+			<path d="M 1090,186 L 1090,245 Z" style="stroke: rgb(47%,14%,18%); stroke-linecap: butt; stroke-width: 3;"/>
+			<path d="M 1090,245 L 1125,245 Z" style="stroke: rgb(47%,14%,18%); stroke-linecap: butt; stroke-width: 3;"/>
+			<polygon points="1125 245, 1111.695 238.0733, 1111.695 251.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(47%,14%,18%); fill-rule: evenodd;"/>
+			<text x="627.352783203125" y="141.65" style="font-family: Arial; font-size: 31px;fill: rgb(47%,14%,18%); stroke:none;" transform="translate(0,283) scale(1,-1)">Regional reliability weights</text>
+			<rect x="1140" y="14" width="735" height="90" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="1295.84375" y="67.00000000000004" style="font-family: ArialBold; font-size: 32px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,134) scale(1,-1)">Aggregate reference scores</text>
+			<text x="1277.203125" y="28.600000000000044" style="font-family: ArialBold; font-size: 32px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,57) scale(1,-1)">Evidence check and threshold</text>
+			<path d="M 1510,156 L 1510,118 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1510 118, 1503.073 131.3049, 1516.927 131.3049" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<text x="240.90136718749994" y="34.400000000000006" style="font-family: ArialBold; font-size: 36px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,68) scale(1,-1)">Output: match assessment or human review</text>
+			<path d="M 1125,59 L 1070,59 Z" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3;"/>
+			<polygon points="1070 59, 1083.305 65.92669, 1083.305 52.07331" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(17%,40%,55%); fill-rule: evenodd;"/>
+		</g>
+	</g>
+</svg>
