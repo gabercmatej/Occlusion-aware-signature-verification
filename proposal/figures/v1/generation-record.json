@@ -1,0 +1,30 @@
+{
+  "mode": "Built-in image generation for Figures 1–2; deterministic editable SVG diagrams for Figures 3–5. No API/CLI fallback.",
+  "assets": [
+    {
+      "file": "01-practical-problem.png",
+      "purpose": "Illustrative stamped query, cleaned candidate, separate variable genuine reference.",
+      "final_prompt": "Use case: scientific-educational.\nEdit target: the attached three-panel signature workflow illustration. Preserve the polished white panoramic layout, burgundy DEMO stamp, navy arrows, invented signature style and realistic ink texture. Regenerate the illustration with the following scientifically important distinction.\nLEFT panel and MIDDLE panel are the SAME QUERY before and after illustrative stamp cleaning: retain the same underlying query handwriting geometry in those two panels, with residual pale stamp traces in the middle. Cleaning is only an illustrative candidate.\nRIGHT panel compares TWO DIFFERENT genuine signing instances from the same invented writer. The upper CLEAN REFERENCE must be visibly but subtly different from the query shown on the left and middle. Make its opening loop slightly narrower and more upright, vary the height and spacing of the small middle strokes, shift the baseline mildly and make the long final stroke and terminal flourish modestly shorter and at a slightly different angle. Preserve enough common personal style that the samples plausibly belong to the same writer. These must look like natural repeated handwriting, NOT exact pixel copies, NOT a completely different writer, and NOT just rotation or scale of the same signature.\nThe lower right sample is the cleaned query from the middle panel. The bracket compares that query with the independently written upper reference. Keep the variations clearly visible at publication size.\nNo authenticity verdict, no confidence number, no green check. Only readable text is DEMO inside the fictional stamp. No titles or captions within the image. Maintain the 3:1 wide composition and generous white margins.\nThe central lesson: a real verifier must tolerate natural within-writer variation; matching does not mean identical handwriting."
+    },
+    {
+      "file": "02-visibility-comparison.png",
+      "purpose": "Separate signing instances, qualitative regional influence, nonidentical zooms.",
+      "final_prompt": "Use case: scientific-educational.\nEdit target: the first attached visibility-aware regional comparison figure. Supporting reference: the second attached revised three-panel workflow, whose upper-right clean reference and lower-right query show natural variation.\nPreserve the crisp panoramic white layout, navy outlines, burgundy DEMO stamp, three corresponding regions, qualitative Higher weight / Lower weight / Higher weight labels, visible-detail inset, and Combined score output.\nIMPORTANT CORRECTION: the top CLEAN REFERENCE and bottom STAMPED QUERY must be separate signing instances of the same fictional writer, NOT identical copies and NOT merely rescaled or rotated versions. Use the independently written upper-right reference in the supporting workflow as the top row: a narrower more upright first loop, slightly different middle-letter spacing and heights, a mildly different baseline, and a shorter final stroke with a subtly different angle and terminal bend. Keep the bottom query in the existing invented writer's style and retain its burgundy stamp. Their personal style should remain clearly related.\nThe right Visible detail inset must show the actual final segment from each respective row. The two enlarged final-stroke samples MUST reflect their small natural shape and angle differences; do not make those zooms identical. The comparison illustrates tolerance to genuine within-writer variation, not a perfect overlay.\nMaintain geometric correspondence of the three regions despite the mild variations. Show qualitative influence only: no numerical weights or scores, no authenticity verdict and no approval ticks.\nUse only these exact readable labels: Clean reference; Stamped query; Visible detail; Higher weight; Lower weight; Higher weight; Combined score; DEMO. Large labels, clear non-overlapping connectors, 3:1 landscape composition, high publication quality."
+    },
+    {
+      "file": "03-literature-map.svg",
+      "purpose": "Map all nine reading IDs to the ideas motivating controlled comparisons.",
+      "specification": "P1 real documents; F0/P5/P8 shared features and pair learning; P2 local/global; P6 regional fusion; P3/P4 restoration and preservation; P7 covariance alternative. No claim that all methods are combined."
+    },
+    {
+      "file": "04-complete-system.svg",
+      "purpose": "Independent reference/query encoding, raw and optional restoration routes, original-query reliability estimation, score fusion, reference aggregation and evidence/threshold decision.",
+      "specification": "Shared encoder parameters; original retained; weights apply to regional fusion; optional cleaner does not imply compulsory cleaning; assessment or review output."
+    },
+    {
+      "file": "05-architecture-candidates.svg",
+      "purpose": "Shared Siamese setup with CNN or local/global hybrid extractor and either global or regional scoring.",
+      "specification": "CNN convolution/pooling/projection vs CNN plus token/self-attention branch concatenation/projection; pair score learned or distance; same trained regional comparator for fusion ablation; layer counts not fixed."
+    }
+  ]
+}

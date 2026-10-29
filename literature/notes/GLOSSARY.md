@@ -1,6 +1,6 @@
 # Signature verification — working glossary
 
-Compiled from P1, F0 and P5 discussions; consult each paper note for source pages.
+Compiled from all nine studied papers: P1–P8 and foundation paper F0. Updated through P8; consult each paper note for source pages. Reader confirmed the full glossary review on 27 October 2026.
 
 | Term | Meaning |
 |---|---|

@@ -2,7 +2,16 @@
 
 Bachelor thesis research on verifying partially stamped offline signatures against genuine references.
 
-**Status:** literature study and first professor proposal preparation. Supervisor approval is pending; no trained verifier, completed experiments or performance results are claimed. The proposal package is targeted for October 29, 2026, before Friday departure. Implementation follows supervisor approval.
+**Status — 30 October 2026:** illustrated proposal drafts are available in English and Slovenian. The author's full content review is planned for October 31; the proposal has not been recorded as sent or approved. No trained verifier, completed experiments or performance results are claimed.
+
+## Read the proposal
+
+| Language | Current PDF | Editable source |
+|---|---|---|
+| English | [Read the English proposal](proposal/proposal_v1.2_EN.pdf) | [Word source](proposal/proposal_v1.2_EN.docx) |
+| Slovenščina | [Preberi slovenski predlog](proposal/proposal_v1.2_SL.pdf) | [Izvorni dokument Word](proposal/proposal_v1.2_SL.docx) |
+
+Both versions use the same nine-page structure, illustrations and styling. Labels inside the shared illustrations remain in English. Figures illustrate proposed methods; they are not experimental results. [Proposal files and draft history](proposal/README.md).
 
 ## Research direction
 
@@ -23,17 +32,19 @@ All nine papers have study notes. Notes distinguish reported findings from propo
 ## Proposal and progress
 
 - [Live plan and progress](PLAN.md)
+- [Current proposal PDFs and sources](proposal/README.md)
+- [Scope and experiment planning sheet](proposal/PLANNING_SHEET.md)
 - [Initial concept brief](proposal/CONCEPT_BRIEF.md)
 - [Proposal outline and supervisor questions](proposal/OUTLINE.md)
 - [Research direction](RESEARCH.md), [question backlog](QUESTIONS.md), [proposed experiments](EXPERIMENTS.md)
 
-The intended first package is a 2–4-page proposal plus references, a simple method diagram, feasible data fallback, evaluation plan and focused supervisor questions. The student reviews and sends it personally. This repository is supporting preparation, not an approved proposal or finished system.
+The current illustrated proposal covers the practical problem, research questions, related work, stamp handling, architecture candidates, data fallback, evaluation and staged work plan. The student reviews and sends it personally. This repository provides supporting preparation, not an approved proposal or finished system.
 
 ## Folder structure
 
 ```text
 literature/      Paper index, reading sequence, notes, glossary and evidence matrix
-proposal/        Concept brief and proposal outline; future drafts
+proposal/        Current bilingual proposal, editable sources, figures and draft history
 data/           Data guidance; company material remains excluded
 notebooks/      Exploratory notebook scaffolds
 src/            Future datasets, preprocessing, segmentation and verification code

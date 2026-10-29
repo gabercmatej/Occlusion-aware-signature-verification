@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="1900" height="1490" preserveAspectRatio="xMinYMin meet" viewBox="0 0 1900 1490" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="1900" height="1490"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-1490)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="0" y="0" width="1900" height="1490" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="574.90478515625" y="1453.45" style="font-family: ArialBold; font-size: 43px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,2906) scale(1,-1)">ONE SHARED COMPARISON SETUP</text>
+			<rect x="20" y="1280" width="285" height="120" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="38.948974609374986" y="1348.75" style="font-family: Arial; font-size: 35px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,2697) scale(1,-1)">Reference input</text>
+			<text x="39.931640624999986" y="1306.75" style="font-family: Arial; font-size: 35px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,2613) scale(1,-1)">Image or region</text>
+			<rect x="20" y="1095" width="285" height="120" rx="13" ry="13" style="stroke: rgb(47%,14%,18%); stroke-linecap: butt; stroke-width: 3; fill: rgb(98%,93%,94%); fill-rule: evenodd;"/>
+			<text x="72.03491210937499" y="1163.75" style="font-family: Arial; font-size: 35px;fill: rgb(47%,14%,18%); stroke:none;" transform="translate(0,2327) scale(1,-1)">Query input</text>
+			<text x="39.931640624999986" y="1121.75" style="font-family: Arial; font-size: 35px;fill: rgb(47%,14%,18%); stroke:none;" transform="translate(0,2243) scale(1,-1)">Image or region</text>
+			<rect x="460" y="1280" width="435" height="120" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="539.40625" y="1349.0" style="font-family: Arial; font-size: 36px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,2698) scale(1,-1)">Shared encoder f</text>
+			<text x="508.4072265625" y="1305.8" style="font-family: Arial; font-size: 36px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,2611) scale(1,-1)">Choose A or B below</text>
+			<path d="M 320,1340 L 445,1340 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="445 1340, 431.6951 1333.073, 431.6951 1346.927" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<path d="M 910,1340 L 1040,1340 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1040 1340, 1026.695 1333.073, 1026.695 1346.927" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="1055" y="1373" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(84%,90%,94%); fill-rule: evenodd;"/>
+			<rect x="1055" y="1358" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(61%,74%,83%); fill-rule: evenodd;"/>
+			<rect x="1055" y="1343" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(25%,47%,62%); fill-rule: evenodd;"/>
+			<rect x="1055" y="1328" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(84%,90%,94%); fill-rule: evenodd;"/>
+			<rect x="1055" y="1313" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(61%,74%,83%); fill-rule: evenodd;"/>
+			<rect x="1055" y="1298" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(25%,47%,62%); fill-rule: evenodd;"/>
+			<rect x="460" y="1095" width="435" height="120" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="539.40625" y="1164.0" style="font-family: Arial; font-size: 36px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,2328) scale(1,-1)">Shared encoder f</text>
+			<text x="508.4072265625" y="1120.8" style="font-family: Arial; font-size: 36px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,2241) scale(1,-1)">Choose A or B below</text>
+			<path d="M 320,1155 L 445,1155 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="445 1155, 431.6951 1148.073, 431.6951 1161.927" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<path d="M 910,1155 L 1040,1155 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1040 1155, 1026.695 1148.073, 1026.695 1161.927" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="1055" y="1188" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(84%,90%,94%); fill-rule: evenodd;"/>
+			<rect x="1055" y="1173" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(61%,74%,83%); fill-rule: evenodd;"/>
+			<rect x="1055" y="1158" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(25%,47%,62%); fill-rule: evenodd;"/>
+			<rect x="1055" y="1143" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(84%,90%,94%); fill-rule: evenodd;"/>
+			<rect x="1055" y="1128" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(61%,74%,83%); fill-rule: evenodd;"/>
+			<rect x="1055" y="1113" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(25%,47%,62%); fill-rule: evenodd;"/>
+			<path d="M 680,1266 L 680,1229 Z" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; stroke-dasharray: 8, 6;"/>
+			<text x="720" y="1237.65" style="font-family: Arial; font-size: 31px;fill: rgb(17%,40%,55%); stroke:none;" transform="translate(0,2475) scale(1,-1)">Same weights</text>
+			<path d="M 1130,1340 L 1300,1340 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<path d="M 1300,1340 L 1300,1250 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<path d="M 1300,1250 L 1425,1250 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1425 1250, 1411.695 1243.073, 1411.695 1256.927" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<path d="M 1130,1155 L 1300,1155 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<path d="M 1300,1155 L 1300,1220 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<path d="M 1300,1220 L 1425,1220 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1425 1220, 1411.695 1213.073, 1411.695 1226.927" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="1440" y="1155" width="420" height="170" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="1516.335693359375" y="1271.45" style="font-family: Arial; font-size: 37px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,2542) scale(1,-1)">Pair comparison</text>
+			<text x="1505.026123046875" y="1227.05" style="font-family: Arial; font-size: 37px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,2454) scale(1,-1)">Learned similarity</text>
+			<text x="1496.769775390625" y="1182.65" style="font-family: Arial; font-size: 37px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,2365) scale(1,-1)">or feature distance</text>
+			<text x="982.3173828125" y="1058.65" style="font-family: Arial; font-size: 31px;fill: rgb(39%,46%,50%); stroke:none;" transform="translate(0,2117) scale(1,-1)">Feature vectors</text>
+			<path d="M 20,1025 L 1880,1025 Z" style="stroke: rgb(72%,78%,83%); stroke-linecap: butt; stroke-width: 2;"/>
+			<text x="266.11328125" y="966.0" style="font-family: ArialBold; font-size: 40px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1932) scale(1,-1)">A  CNN EXTRACTOR</text>
+			<text x="1112.216796875" y="966.0" style="font-family: ArialBold; font-size: 40px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1932) scale(1,-1)">B  CNN–TRANSFORMER HYBRID</text>
+			<rect x="20" y="510" width="880" height="430" rx="13" ry="13" style="stroke: rgb(72%,78%,83%); stroke-linecap: butt; stroke-width: 3; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<rect x="955" y="510" width="925" height="430" rx="13" ry="13" style="stroke: rgb(72%,78%,83%); stroke-linecap: butt; stroke-width: 3; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<rect x="42" y="715" width="144" height="120" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="75.077880859375" y="762.75" style="font-family: Arial; font-size: 35px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1525) scale(1,-1)">Input</text>
+			<path d="M 200,775 L 255,775 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="255 775, 241.6951 768.0733, 241.6951 781.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="275" y="700" width="110" height="145" rx="3" ry="3" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 2; fill: rgb(86%,91%,95%); fill-rule: evenodd;"/>
+			<rect x="290" y="715" width="110" height="145" rx="3" ry="3" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 2; fill: rgb(74%,82%,88%); fill-rule: evenodd;"/>
+			<rect x="305" y="730" width="110" height="145" rx="3" ry="3" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 2; fill: rgb(52%,67%,78%); fill-rule: evenodd;"/>
+			<rect x="320" y="745" width="110" height="145" rx="3" ry="3" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 2; fill: rgb(27%,48%,63%); fill-rule: evenodd;"/>
+			<text x="268.71875" y="631.1" style="font-family: Arial; font-size: 34px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1262) scale(1,-1)">Convolutions</text>
+			<text x="209.19384765625" y="590.3000000000001" style="font-family: Arial; font-size: 34px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1180) scale(1,-1)">Local stroke patterns</text>
+			<path d="M 445,775 L 508,775 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="508 775, 494.6951 768.0733, 494.6951 781.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="523" y="700" width="190" height="145" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="552.862060546875" y="780.75" style="font-family: Arial; font-size: 33px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1561) scale(1,-1)">Pool and</text>
+			<text x="568.475830078125" y="741.15" style="font-family: Arial; font-size: 33px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1482) scale(1,-1)">project</text>
+			<path d="M 728,775 L 785,775 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="785 775, 771.6951 768.0733, 771.6951 781.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="800" y="803" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(84%,90%,94%); fill-rule: evenodd;"/>
+			<rect x="800" y="788" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(61%,74%,83%); fill-rule: evenodd;"/>
+			<rect x="800" y="773" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(25%,47%,62%); fill-rule: evenodd;"/>
+			<rect x="800" y="758" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(84%,90%,94%); fill-rule: evenodd;"/>
+			<rect x="800" y="743" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(61%,74%,83%); fill-rule: evenodd;"/>
+			<rect x="800" y="728" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(25%,47%,62%); fill-rule: evenodd;"/>
+			<text x="777.312744140625" y="631.95" style="font-family: Arial; font-size: 33px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1263) scale(1,-1)">Vector</text>
+			<rect x="976" y="675" width="126" height="120" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="1002.302001953125" y="723.45" style="font-family: Arial; font-size: 33px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1446) scale(1,-1)">Input</text>
+			<path d="M 1116,735 L 1141,735 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<path d="M 1141,735 L 1141,848 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<path d="M 1141,848 L 1160,848 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1160 848, 1146.695 841.0733, 1146.695 854.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<path d="M 1141,735 L 1141,640 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<path d="M 1141,640 L 1160,640 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1160 640, 1146.695 633.0733, 1146.695 646.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="1175" y="791" width="275" height="114" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="1218.966796875" y="856.5" style="font-family: Arial; font-size: 34px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1713) scale(1,-1)">CNN branch</text>
+			<text x="1205.71044921875" y="815.7" style="font-family: Arial; font-size: 34px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1631) scale(1,-1)">Local features</text>
+			<rect x="1175" y="576" width="275" height="127" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="1209.10107421875" y="665.85" style="font-family: Arial; font-size: 31px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1331) scale(1,-1)">Token encoder</text>
+			<text x="1221.1650390625" y="628.65" style="font-family: Arial; font-size: 31px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1257) scale(1,-1)">Self-attention</text>
+			<text x="1204.80224609375" y="591.45" style="font-family: Arial; font-size: 31px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1182) scale(1,-1)">Global relations</text>
+			<path d="M 1464,848 L 1500,848 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<path d="M 1500,848 L 1500,735 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<path d="M 1500,735 L 1520,735 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1520 735, 1506.695 728.0733, 1506.695 741.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<path d="M 1464,640 L 1500,640 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<path d="M 1500,640 L 1500,705 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<path d="M 1500,705 L 1520,705 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1520 705, 1506.695 698.0733, 1506.695 711.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="1535" y="656" width="235" height="139" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="1556.0947265625" y="734.0" style="font-family: Arial; font-size: 34px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1468) scale(1,-1)">Concatenate</text>
+			<text x="1568.38818359375" y="693.2" style="font-family: Arial; font-size: 34px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,1386) scale(1,-1)">and project</text>
+			<path d="M 1784,725 L 1810,725 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1810 725, 1796.695 718.0733, 1796.695 731.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="1820" y="758" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(84%,90%,94%); fill-rule: evenodd;"/>
+			<rect x="1820" y="743" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(61%,74%,83%); fill-rule: evenodd;"/>
+			<rect x="1820" y="728" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(25%,47%,62%); fill-rule: evenodd;"/>
+			<rect x="1820" y="713" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(84%,90%,94%); fill-rule: evenodd;"/>
+			<rect x="1820" y="698" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(61%,74%,83%); fill-rule: evenodd;"/>
+			<rect x="1820" y="683" width="58" height="12" rx="1" ry="1" style="stroke: none; stroke-linecap: butt; stroke-width: 3; fill: rgb(25%,47%,62%); fill-rule: evenodd;"/>
+			<text x="1069.74365234375" y="526.5" style="font-family: Arial; font-size: 30px;fill: rgb(39%,46%,50%); stroke:none;" transform="translate(0,1053) scale(1,-1)">Depth and exact backbone selected on validation data</text>
+			<path d="M 20,465 L 1880,465 Z" style="stroke: rgb(72%,78%,83%); stroke-linecap: butt; stroke-width: 2;"/>
+			<text x="441.083984375" y="406.0" style="font-family: ArialBold; font-size: 40px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,812) scale(1,-1)">REGIONAL SCORING CAN USE EITHER EXTRACTOR</text>
+			<rect x="25" y="214" width="124" height="116" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="62.07275390625" y="258.35" style="font-family: ArialBold; font-size: 39px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,516) scale(1,-1)">R1</text>
+			<rect x="164" y="214" width="124" height="116" rx="13" ry="13" style="stroke: rgb(47%,14%,18%); stroke-linecap: butt; stroke-width: 3; fill: rgb(98%,93%,94%); fill-rule: evenodd;"/>
+			<text x="201.07275390625" y="258.35" style="font-family: ArialBold; font-size: 39px;fill: rgb(47%,14%,18%); stroke:none;" transform="translate(0,516) scale(1,-1)">R2</text>
+			<rect x="303" y="214" width="124" height="116" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="340.07275390625" y="258.35" style="font-family: ArialBold; font-size: 39px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,516) scale(1,-1)">R3</text>
+			<text x="116.32666015625" y="148.65" style="font-family: Arial; font-size: 31px;fill: rgb(39%,46%,50%); stroke:none;" transform="translate(0,297) scale(1,-1)">Corresponding</text>
+			<text x="49.982421875" y="111.45000000000002" style="font-family: Arial; font-size: 31px;fill: rgb(39%,46%,50%); stroke:none;" transform="translate(0,222) scale(1,-1)">reference–query regions</text>
+			<path d="M 455,272 L 544,272 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="544 272, 530.6951 265.0733, 530.6951 278.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="560" y="196" width="350" height="146" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="574.9423828125" y="277.9999999999999" style="font-family: Arial; font-size: 36px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,555) scale(1,-1)">Regional similarities</text>
+			<text x="647.9619140625" y="234.7999999999999" style="font-family: Arial; font-size: 36px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,469) scale(1,-1)">s1   s2   s3</text>
+			<path d="M 925,272 L 1035,272 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1035 272, 1021.695 265.0733, 1021.695 278.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="1050" y="196" width="580" height="146" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="1177.9033203125" y="277.9999999999999" style="font-family: Arial; font-size: 36px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,555) scale(1,-1)">Equal averaging OR</text>
+			<text x="1115.8876953125" y="234.7999999999999" style="font-family: Arial; font-size: 36px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,469) scale(1,-1)">visibility-weighted averaging</text>
+			<path d="M 1645,272 L 1725,272 Z" style="stroke: rgb(9%,23%,34%); stroke-linecap: butt; stroke-width: 4;"/>
+			<polygon points="1725 272, 1711.695 265.0733, 1711.695 278.9267" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,23%,34%); fill-rule: evenodd;"/>
+			<rect x="1740" y="221" width="140" height="96" rx="13" ry="13" style="stroke: rgb(17%,40%,55%); stroke-linecap: butt; stroke-width: 3; fill: rgb(92%,95%,97%); fill-rule: evenodd;"/>
+			<text x="1765.5908203125" y="257.1" style="font-family: Arial; font-size: 34px;fill: rgb(9%,23%,34%); stroke:none;" transform="translate(0,514) scale(1,-1)">Score</text>
+			<text x="987.8203125" y="114.8" style="font-family: Arial; font-size: 32px;fill: rgb(47%,14%,18%); stroke:none;" transform="translate(0,229) scale(1,-1)">Predicted visibility provides non-negative weights.</text>
+			<text x="1061.6015625" y="76.4" style="font-family: Arial; font-size: 32px;fill: rgb(47%,14%,18%); stroke:none;" transform="translate(0,152) scale(1,-1)">Reference scores are then aggregated.</text>
+			<path d="M 1340,156 L 1340,182 Z" style="stroke: rgb(47%,14%,18%); stroke-linecap: butt; stroke-width: 3;"/>
+			<polygon points="1340 182, 1346.927 168.6951, 1333.073 168.6951" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(47%,14%,18%); fill-rule: evenodd;"/>
+			<text x="454.7216796875" y="24.5" style="font-family: Arial; font-size: 30px;fill: rgb(39%,46%,50%); stroke:none;" transform="translate(0,49) scale(1,-1)">Conceptual design: module choices and layer counts remain experimental.</text>
+		</g>
+	</g>
+</svg>
