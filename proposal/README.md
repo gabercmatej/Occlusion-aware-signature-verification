@@ -1,5 +1,7 @@
 # Research proposal
 
+> **Historical academic proposal.** Since 10 November 2026, academic preparation is paused and the owner is pursuing the independent customer solution described in the [root README](../README.md) and [implementation plan](../docs/superpowers/plans/2026-11-10-customer-verification.md). The PDFs below are preserved October snapshots. Their optional-restoration route is superseded: the current product always runs stamp removal before comparison and then weights regions using original stamp and cleaning provenance.
+
 Current version: **v1.2 — 30 October 2026**. Awaiting the author's full content review; not recorded as submitted or approved.
 
 | Language | PDF for reading | Editable source |
