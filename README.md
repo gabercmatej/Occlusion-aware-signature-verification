@@ -1,16 +1,60 @@
 # Occlusion-Aware Signature Verification
 
-Verification of handwritten signatures obscured by stamps, with mandatory stamp removal and provenance-aware regional comparison.
+A local document-review and deep-learning research project for handwritten signatures obscured by stamps.
 
-**Status — 10 November 2026:** independent applied project authorized by the project owner and supported by the intended customer. Both full documents and cropped signatures are expected; the first sample is pending. Academic thesis preparation is paused, with possible discussion again in January 2027. The repository currently contains the design, literature study and implementation plan; no working verifier, completed experiments or accuracy results are claimed.
+**Status — 11 November 2026:** two research reviews and a full build roadmap are complete. The first implementation milestone is in progress; no completed software milestone, trained model, verification accuracy or runtime result is claimed in this update.
 
-**Current product sequence:** original query → stamp estimate → **stamp removal** → cleaned query → reference/query regional comparison → weights from original stamp and cleaning provenance → assessment or review.
+[Build roadmap](BUILD_PLAN.md) · [Latest research review](docs/research/SECOND_REVIEW.md) · [Development record](docs/SESSION_LOG.md) · [Literature matrix](literature/literature_matrix.csv)
 
-The original image and affected-area maps are retained. Every query goes through cleaning before identity comparison. A convincing restored stroke is not automatically reliable evidence.
+## The problem
 
-[Start development](docs/GETTING_STARTED.md) · [Implementation plan](docs/superpowers/plans/2026-11-10-customer-verification.md) · [System design](docs/superpowers/specs/2026-11-10-customer-verification-design.md) · [Literature](literature/START_HERE.md) · [Glossary](literature/notes/GLOSSARY.md)
+A reviewer needs to compare a stamped signature with genuine references of a claimed writer. Stamp ink can obscure distinguishing strokes, while removing it can also damage handwriting. The project asks whether recorded cleaning interventions and reliable local evidence can improve comparison and identify cases that need human review.
 
-The illustrated material below is adapted from the October proposal. Its current method is updated consistently to mandatory cleaning followed by reliability weighting. [Original English PDF](proposal/proposal_v1.2_EN.pdf) and [Slovenian PDF](proposal/proposal_v1.2_SL.pdf) remain historical snapshots and contain the earlier optional-cleaning scope.
+The first goal is a useful local reviewer prototype. The research track then tests reliability-aware matching, review policies and learned signature representations. A possible thesis scope will be discussed in January 2027; novelty and thesis approval are not established.
+
+## Current approach
+
+```text
+Document or signature crop + genuine references
+    → manual crop and optional stamp-region hint
+    → conservative stamp removal + complete provenance
+    → normalisation + classical / generic-feature comparison
+    → similarity, evidence coverage and review reasons
+    → local reviewer interface
+```
+
+- **Cleaning first:** every product query passes through stamp removal before comparison. Preserve the original, stamp estimate, intervention/change maps and ambiguous areas. Do not reconstruct handwriting from genuine references.
+- **Honest limitations:** the initial cleaner uses colour separation without inpainting. Deletion can still damage strokes. Black and same-colour stamps may be undetectable; “no stamp detected” does not mean the image is clean.
+- **Comparison is a hypothesis:** DINOv2 global/patch features are a candidate baseline, not a proven signature verifier. Fixed-window scoring with a whole-signature encoder is no longer selected. Published SigNet weights remain a permission-dependent research reference.
+- **Evidence before scores:** similarity, coverage and review reasons stay separate. Showing an identity-comparison score depends on a benchmark gate against a classical baseline, including skilled forgeries where permitted data are available. An uncalibrated score is not an authenticity probability or verdict.
+- **Local customer data:** real documents, signatures and identifying artifacts stay on the reviewer's machine. Public examples use fictional or otherwise permitted material.
+
+The [second review](docs/research/SECOND_REVIEW.md) records sources, alternatives, permission questions and corrections to the [initial review](docs/research/INITIAL_REVIEW.md). Its findings are planning evidence, not measured results from this project.
+
+## Delivery and research stages
+
+| Stage | Intended result | State |
+|---|---|---|
+| M1a–M1b: cleaning | Tested command, provenance artifacts, failure examples and cleaner comparison | M1a in progress; completion not yet verified |
+| M2a–M2b: comparison | Reference enrolment, baselines, coverage and held-out benchmark | Planned |
+| M3: local prototype | Crop, inspect, compare and export cases locally; score only if its gate passes | Planned |
+| M4–M5: research evaluation | Stamp ablations, review calibration and reliability-aware local matching | Planned |
+| M6: deep learning | Small learned comparator, own signature encoder, then stamp-aware training | Planned; data quality and compute to verify |
+| M7–M8: conditional extensions | Learned segmentation and an occlusion-aware verifier where evidence justifies them | Optional; segmentation moves earlier if needed |
+| M9–M10: evidence and thesis preparation | Reproducible portfolio demo, results and January discussion pack | Planned; documentation grows with each milestone |
+
+**Research hypotheses, not findings:** reliability-aware local matching improves verification at matched usable evidence; cleaning provenance improves review decisions over a score-only rule. Negative and inconclusive results will be retained.
+
+For coding, [BUILD_PLAN.md](BUILD_PLAN.md) is the single source of truth and [CLAUDE.md](CLAUDE.md) gives concise instructions. Each session implements one bounded task and records actual checks. Runnable commands and measured results will be published when verified.
+
+## Illustrated research background
+
+The following material preserves the earlier proposal and its figures. It describes historical architecture candidates and broader experiments, including learned restoration and fixed regional layouts. Those choices are superseded where they differ from the current approach above and the living build plan. They are not implemented features or required additions.
+
+[Original English proposal](proposal/proposal_v1.2_EN.pdf) · [Slovenian proposal](proposal/proposal_v1.2_SL.pdf)
+
+<details>
+<summary>Read the illustrated proposal, research context and references</summary>
 
 ## Abstract
 
@@ -101,7 +145,7 @@ A Siamese setup will apply a shared extractor to clean reference signatures and 
 
 ![Figure 4: Original proposal system diagram.](proposal/figures/v1.1/04-complete-system.png)
 
-This figure is retained from the PDF as historical material. Its optional-restoration route and simplified regional connectors are superseded by the mandatory-cleaning sequence above. The current [system design](docs/superpowers/specs/2026-11-10-customer-verification-design.md) is authoritative.
+This figure is retained from the PDF as historical material. Its optional-restoration route and simplified regional connectors are superseded by the mandatory-cleaning sequence above. The current [build plan](BUILD_PLAN.md) controls implementation choices; the [starting design](docs/superpowers/specs/2026-11-10-customer-verification-design.md) provides background.
 
 </details>
 
@@ -265,9 +309,33 @@ https://cedar.buffalo.edu/NIJ/publications.html
 
 https://gpds.ulpgc.es/downloadnew/download.htm
 
+
+</details>
+
 ## Development roadmap
 
-The first milestone is a local inspection command that produces original/cleaned/provenance outputs on owned or permissible examples. Then secure labeled development data, adapt the shared CNN, compare equal and weighted regional scoring, calibrate a review policy, and build the local interface. Add complex cleaners or a hybrid only after measuring a limitation. See the [full task-by-task plan](docs/superpowers/plans/2026-11-10-customer-verification.md) and [starting instructions](docs/GETTING_STARTED.md).
+**Selected path (second review, 11 November 2026).** The historical proposal describes broader research candidates. The selected first prototype is narrower; implementation has begun, but no milestone completion has been verified:
+
+- a classical colour-separation stamp cleaner that never inpaints, records every change, and reports "no stamp detected" rather than "clean", because colour cannot reveal a black or same-ink stamp;
+- comparison built from components with explicit permissive terms (generic pretrained patch features first), with the score shown to a reviewer only if it passes a benchmark gate against a classical baseline;
+- similarity, evidence coverage and the review rule kept as three separate outputs, so that less usable evidence leads to review and never to more confidence.
+
+This replaces two choices of the [initial review](docs/research/INITIAL_REVIEW.md): frozen SigNet features [2](#ref-2) are now a research benchmark reference only, because their published weights were trained on data restricted to non-commercial use, and fixed window scoring is dropped in favour of local patch matching. Later research milestones test two hypotheses (reliability-aware local comparison; provenance-based review) and add training only where a measured failure justifies it. Reasons, alternatives and sources are in the [second review](docs/research/SECOND_REVIEW.md).
+
+Milestones, permissions, the evaluation protocol and stop criteria are in the [living build plan](BUILD_PLAN.md). The current task is a tested cleaning/provenance command on synthetic fixtures (M1a); its completion remains unverified. The [older detailed plan](docs/superpowers/plans/2026-11-10-customer-verification.md) is context, not a requirement to implement every experiment. See [starting instructions](docs/GETTING_STARTED.md).
+
+## Development progress and evidence
+
+| Checkpoint | Current state | Evidence |
+|---|---|---|
+| Literature foundation | Study material prepared | [Nine-paper matrix](literature/literature_matrix.csv), [notes](literature/notes/README.md) and [glossary](literature/notes/GLOSSARY.md) |
+| Prototype planning | Flexible plan and coordination instructions prepared | [Build plan](BUILD_PLAN.md) and [Claude workflow](docs/CLAUDE_WORKFLOW.md) |
+| Architecture/feasibility review | Completed 11 November 2026 (planning only, nothing measured) | [Initial review](docs/research/INITIAL_REVIEW.md) |
+| Second review and full roadmap | Completed 11 November 2026 (planning only, nothing measured) | [Second review with evidence register](docs/research/SECOND_REVIEW.md); roadmap in the [build plan](BUILD_PLAN.md) |
+| First cleaning implementation (M1a) | In progress; completion and checks not yet verified | No accuracy or runtime claim is made |
+| Working comparison prototype | Planned | No verifier performance result is claimed |
+
+Each meaningful milestone will document the practical problem solved, implementation decisions, reproducible checks and remaining limitations, with shareable visual examples or a demonstration where useful. Measured results will include their evaluation conditions. [Session reports](docs/SESSION_LOG.md) preserve the development record; this public overview separates intended features from implemented and validated work.
 
 ## Literature and project structure
 
