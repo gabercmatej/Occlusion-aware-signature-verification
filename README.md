@@ -2,7 +2,7 @@
 
 Verification of handwritten signatures obscured by stamps, with mandatory stamp removal and provenance-aware local comparison.
 
-**Status — 11 November 2026:** two research reviews are complete and implementation of the first cleaning/provenance milestone is underway. The project combines an early local prototype for document review with a longer-term deep-learning research programme. A possible thesis will be discussed in January 2027. No verifier accuracy, trained model or runtime result is claimed yet.
+**Status — 11 November 2026:** two research reviews are complete and implementation of the first cleaning/provenance milestone is underway. The project combines an early local prototype for document review with a longer-term deep-learning research programme. No verifier accuracy, trained model or runtime result is claimed yet.
 
 [Living build plan](BUILD_PLAN.md) · [Research review](docs/research/SECOND_REVIEW.md) · [Development progress](#development-progress-and-evidence) · [Literature](literature/START_HERE.md)
 
