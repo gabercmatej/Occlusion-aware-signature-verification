@@ -14,14 +14,9 @@ The first goal is a useful local reviewer prototype. The research track then tes
 
 ## Current approach
 
-```text
-Document or signature crop + genuine references
-    → manual crop and optional stamp-region hint
-    → conservative stamp removal + complete provenance
-    → normalisation + classical / generic-feature comparison
-    → similarity, evidence coverage and review reasons
-    → local reviewer interface
-```
+![Current conceptual pipeline: the query passes through conservative removal before comparison; provenance informs reliability, while genuine references enter only the comparison branch. Similarity, coverage and review reasons remain separate.](docs/assets/research-2026-11/01-current-pipeline.png)
+
+*Current design, not a measured result. References never reconstruct the query; the original remains available for human inspection.*
 
 - **Cleaning first:** every product query passes through stamp removal before comparison. Preserve the original, stamp estimate, intervention/change maps and ambiguous areas. Do not reconstruct handwriting from genuine references.
 - **Honest limitations:** the initial cleaner uses colour separation without inpainting. Deletion can still damage strokes. Black and same-colour stamps may be undetectable; “no stamp detected” does not mean the image is clean.
@@ -30,6 +25,22 @@ Document or signature crop + genuine references
 - **Local customer data:** real documents, signatures and identifying artifacts stay on the reviewer's machine. Public examples use fictional or otherwise permitted material.
 
 The [second review](docs/research/SECOND_REVIEW.md) records sources, alternatives, permission questions and corrections to the [initial review](docs/research/INITIAL_REVIEW.md). Its findings are planning evidence, not measured results from this project.
+
+## Current research questions
+
+**Main question:** How should stamp-affected evidence be treated so that offline signature comparison remains useful without hiding uncertainty or increasing false acceptance?
+
+| Question | Controlled test | Evidence to report |
+|---|---|---|
+| **RQ1 / H1 — Reliable local evidence:** does reliability-aware local matching outperform global comparison of the cleaned query and equal-weight local matching? | Keep the cleaner, encoder and cases fixed; compare at matched usable evidence | False acceptance at a fixed validation-selected false-rejection rate, with writer-level uncertainty |
+| **RQ2 / H2 — Review from provenance:** do cleaning records help identify comparison failures better than a score-only review rule? | Keep the comparator and cases fixed; compare at the same review rate | Errors on retained cases, coverage–error curves and failure examples |
+| **RQ3 — Cleaning damage:** which removal strategy best reduces stamp interference while preserving identity-bearing strokes? | Compare cleaners on the same inputs with a fixed verifier; include different/same-colour inks and physical scans | Stamp removal, handwriting loss, downstream verification and missed failure flags |
+| **RQ4 — Learning and transfer:** when do a learned comparator, signature-domain encoder and stamp-aware training improve over frozen generic features? | Add one learning step at a time; hold out writers and stamp designs; assess physical-scan transfer | Genuine, random-impostor and skilled-forgery results separately, where permitted labels exist |
+| **RQ5 — Practical value:** which improvements justify their data, compute and reviewer-workflow costs? | Compare error, review workload, latency and memory under stated conditions | Measured tradeoffs and local reviewer feedback, not architecture size alone |
+
+![Research design: H1 compares reliability-aware local matching with controlled baselines; H2 compares provenance-based review with score-only review. Cleaning and transfer are supporting questions.](docs/assets/research-2026-11/02-research-questions.png)
+
+H1 and H2 are adaptations to test; novelty and benefit are not established. Oracle masks are evaluation controls, never inference inputs. The uncleaned-query evaluation control remains pending owner approval. Genuine-only data cannot establish skilled-forgery rejection.
 
 ## Delivery and research stages
 
@@ -42,6 +53,8 @@ The [second review](docs/research/SECOND_REVIEW.md) records sources, alternative
 | M6: deep learning | Small learned comparator, own signature encoder, then stamp-aware training | Planned; data quality and compute to verify |
 | M7–M8: conditional extensions | Learned segmentation and an occlusion-aware verifier where evidence justifies them | Optional; segmentation moves earlier if needed |
 | M9–M10: evidence and thesis preparation | Reproducible portfolio demo, results and January discussion pack | Planned; documentation grows with each milestone |
+
+![Development roadmap: M1–M3 deliver the local prototype, M4–M6 evaluate and learn, and M7–M8 are conditional extensions. Portfolio evidence develops throughout, with a January 2027 thesis discussion pack.](docs/assets/research-2026-11/03-development-roadmap.png)
 
 **Research hypotheses, not findings:** reliability-aware local matching improves verification at matched usable evidence; cleaning provenance improves review decisions over a score-only rule. Negative and inconclusive results will be retained.
 
@@ -70,35 +83,13 @@ Despite the adoption of cryptographic digital signatures in electronic workflows
 
 Stamp overlap adds a second difficulty: stamp ink can hide distinctive strokes and introduce patterns that a verifier mistakes for handwriting [1](#ref-1). Cleaning can help, but may also remove genuine strokes or generate plausible replacements. An attractive restored image does not establish that the underlying identity evidence has survived. The intended workflow uses clean genuine references and stamped queries; actual reference availability will be confirmed before a company pilot.
 
-## Questions guiding development
+## Earlier research framing
 
-### Main question
+The proposal originally emphasised fixed regional score fusion and CNN/hybrid architecture comparisons. Those are historical candidates. The [current research questions](#current-research-questions) above now define the tests: reliability-aware local matching (H1), provenance-based review (H2), cleaning damage, learning/transfer and practical cost. The [living plan](BUILD_PLAN.md) controls their implementation and evaluation.
 
-**Can regional comparison weighted by stamp-removal reliability improve verification of cleaned signatures while maintaining reliable rejection of forgeries?**
+![Historical visibility illustration from the proposal; not the selected local-matching architecture.](proposal/figures/v1.1/02-visibility-comparison.png)
 
-Stamp removal can erase genuine strokes or introduce plausible replacements, so the cleaned image does not make every region equally trustworthy. Inspired by P6 [7](#ref-7), the system will compare corresponding regions only after cleaning and give more influence to useful handwriting less affected by the original stamp and the cleaning process. The original stamp map, intervention footprint and before/after changes remain available for estimating reliability. The controlled test keeps the cleaner and trained regional verifier fixed, changes only score fusion, and checks both genuine rejection and forgery acceptance.
-
-![Figure 2: The original reference/query view locates affected areas. In the current product, comparison features come from the cleaned query; the original stamp/removal provenance controls regional influence.](proposal/figures/v1.1/02-visibility-comparison.png)
-
-*Figure 2. The original reference/query view locates affected areas. In the current product, comparison features come from the cleaned query; the original stamp/removal provenance controls regional influence.*
-
-### Secondary question 1  Complexity and architecture
-
-**How much does increasing model and pipeline complexity improve verification performance relative to its computational cost?**
-
-Progress from a shared CNN to selected additions such as multi-scale features, alignment and a local/global hybrid. Measure errors, latency and model size. The architecture section below explains how these choices fit the shared comparison setup.
-
-### Secondary question 2  Stamp removal strategy
-
-**Which stamp-removal strategy best preserves identity-bearing handwriting and improves downstream verification under different stamp conditions?**
-
-Compare feasible cleaners on identical queries, then evaluate their cleaned outputs using the same verifier. Start with conservative color separation, advance to a paired-data learned cleaner, and consider a reviewed GAN or conditional-diffusion candidate when justified. Every product query still passes through removal. Untreated-query scoring may be an offline diagnostic to quantify cleaning benefit or harm; it is not a production bypass.
-
-### Secondary question 3  Training and transfer
-
-**How do training data and clean–stamped training strategies affect generalization to unseen writers, stamp designs and real documents?**
-
-Compare clean no-op controls, stamp augmentation and selected clean–cleaned pair learning. Hold out writers and stamp designs, then assess transfer to physical documents where suitable data are available. The verifier must see the same kind of cleaned outputs during development that it will receive in use.
+*Historical conceptual illustration. The current pipeline and research diagrams above supersede its architecture assumptions.*
 
 ## Related work
 
