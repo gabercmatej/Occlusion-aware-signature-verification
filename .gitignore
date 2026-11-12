@@ -8,6 +8,10 @@ __pycache__/
 data/company/*
 !data/company/README.md
 
+# Local case manifests and comparison outputs (may identify people); keep off GitHub.
+*.local.json
+data/cases/*
+
 # Large/local artifacts.
 models/*
 !models/README.md

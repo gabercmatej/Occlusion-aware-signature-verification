@@ -5,6 +5,12 @@
     python -m osv.cli measure-fixtures [--seeds 10] [--json <file>]
     python -m osv.cli fixture-figure --out <file.png>
     python -m osv.cli compare-cleaners --split dev|heldout --out <dir>
+    python -m osv.cli make-demo-case --out <dir>
+    python -m osv.cli compare-case <manifest.json> --out <dir>
+
+``compare-case`` (M2a) is an unvalidated classical baseline for diagnostics: the query always
+passes through the cleaner named in the manifest; there is no option to compare a raw query.
+It prints distances, never a genuine/forged verdict or probability.
 
 ``--method`` defaults to ``chroma`` (the M1a/M1a.1 baseline); ``optical-density`` is the M1b
 experiment. The method is chosen by the caller, never per image.
@@ -171,8 +177,41 @@ def cmd_compare(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_make_demo_case(args: argparse.Namespace) -> int:
+    from osv.datasets.synthetic_cases import write_demo_case
+
+    for path in write_demo_case(args.out):
+        print(f"wrote {path}")
+    print("fictional synthetic case; software demonstration only")
+    return 0
+
+
+def cmd_compare_case(args: argparse.Namespace) -> int:
+    from osv.verification.compare import RESULT_LABEL, run_case
+
+    r = run_case(args.manifest, args.out)
+    c, q = r["comparison"], r["query"]
+    print(RESULT_LABEL)
+    print(f"case {r['case_id']} | claimed writer {r['claimed_writer_id']} | references {r['reference_count']} "
+          f"({r['reference_count_distinct_files']} distinct files)")
+    print(f"cleaner: {q['cleaner']['method']} -> {q['cleaner']['status']} ({', '.join(q['cleaner']['reasons']) or '-'})")
+    print(f"query ink share outside flagged regions (not proven reliable): {q['evidence']['ink_share_not_flagged']}")
+    print("| reference | distance all pixels | distance excl. query-flagged | ref edge share in flagged |")
+    print("|---|---|---|---|")
+    for row in c["per_reference"]:
+        print(f"| {row['reference_id']} | {row['distance_all_pixels']} | {row['distance_excluding_query_flagged']} | "
+              f"{row['reference_edge_share_in_query_flagged']} |")
+    a = c["aggregate"]
+    print(f"aggregate ({c['aggregation_rule']}): all pixels median {a['distance_all_pixels']['median']}, "
+          f"excluding flagged median {a['distance_excluding_query_flagged']['median']}")
+    print(f"reference pair distances: {r['reference_pair_distance_summary']}")
+    print(f"review flags: {', '.join(r['review_flags'])}")
+    print(f"wrote {args.out}/case_report.json, enrolment.json, query_cleaning/, normalised/, references/")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
-    ap = argparse.ArgumentParser(prog="osv", description="Occlusion-aware signature verification tools (M1a/M1b).")
+    ap = argparse.ArgumentParser(prog="osv", description="Occlusion-aware signature verification tools (M1a/M1b/M2a baseline).")
     sub = ap.add_subparsers(dest="command", required=True)
 
     c = sub.add_parser("clean", help="estimate and conservatively remove a coloured stamp; write provenance")
@@ -204,6 +243,15 @@ def build_parser() -> argparse.ArgumentParser:
     k.add_argument("--out", required=True, help="output directory (must be new or empty)")
     k.add_argument("--methods", default=",".join(METHODS), help="comma-separated methods")
     k.set_defaults(func=cmd_compare)
+
+    d = sub.add_parser("make-demo-case", help="write a fictional reference/query case and manifests")
+    d.add_argument("--out", required=True, help="output directory (must be new or empty)")
+    d.set_defaults(func=cmd_make_demo_case)
+
+    v = sub.add_parser("compare-case", help="unvalidated classical baseline: clean query, compare with enrolled references")
+    v.add_argument("manifest")
+    v.add_argument("--out", required=True, help="output directory (must be new or empty)")
+    v.set_defaults(func=cmd_compare_case)
     return ap
 
 
