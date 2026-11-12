@@ -402,7 +402,7 @@ def test_status_propagation_without_safety_claims(tmp_path, query_kind, status):
     if status == "review":
         assert any(f.startswith("cleaner_reason:") for f in r["review_flags"])
     assert "UNVALIDATED" in r["result_type"]
-    assert "NOT proven reliable" in r["query"]["evidence"]["ink_share_not_flagged_meaning"]
+    assert "NOT proven reliable" in r["query"]["evidence"]["ink_share_in_descriptor_support_meaning"]
     enrol_json = json.loads((tmp_path / "o" / "enrolment.json").read_text())
     for doc in (r, enrol_json):
         for path, key, value in _walk(doc):

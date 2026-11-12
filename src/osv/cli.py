@@ -195,12 +195,12 @@ def cmd_compare_case(args: argparse.Namespace) -> int:
     print(f"case {r['case_id']} | claimed writer {r['claimed_writer_id']} | references {r['reference_count']} "
           f"({r['reference_count_distinct_files']} distinct files)")
     print(f"cleaner: {q['cleaner']['method']} -> {q['cleaner']['status']} ({', '.join(q['cleaner']['reasons']) or '-'})")
-    print(f"query ink share outside flagged regions (not proven reliable): {q['evidence']['ink_share_not_flagged']}")
-    print("| reference | distance all pixels | distance excl. query-flagged | ref edge share in flagged |")
+    print(f"query ink share in descriptor support (not proven reliable): {q['evidence']['ink_share_in_descriptor_support']}")
+    print("| reference | distance all pixels | distance excl. query-flagged | ref edge share outside support |")
     print("|---|---|---|---|")
     for row in c["per_reference"]:
-        print(f"| {row['reference_id']} | {row['distance_all_pixels']} | {row['distance_excluding_query_flagged']} | "
-              f"{row['reference_edge_share_in_query_flagged']} |")
+        print(f"| {row['reference_id']} | {row['distance_all_pixels']} | {row['distance_excluding_query_flagged'] if row['distance_excluding_query_flagged'] is not None else row['excluding_query_flagged_status']} | "
+              f"{row['reference_edge_share_outside_descriptor_support']} |")
     a = c["aggregate"]
     print(f"aggregate ({c['aggregation_rule']}): all pixels median {a['distance_all_pixels']['median']}, "
           f"excluding flagged median {a['distance_excluding_query_flagged']['median']}")
