@@ -45,7 +45,7 @@ def test_artifacts_complete_and_consistent(tmp_path, kind):
     assert (out / "original.png").read_bytes() == raw_before
     assert report["input"]["sha256"] == sha256_file(src)
     assert report["input"]["unchanged_after_run"] is True
-    assert report["schema_version"] == "1.0"
+    assert report["schema_version"] == "1.1"  # 1.1 (M1b): additive cleaner.method field
     for key in ("status", "reasons", "separability", "metrics", "cleaner", "artifacts", "status_meaning"):
         assert key in report
     for k in ("ink_fraction_reliable", "ink_fraction_ambiguous", "ink_fraction_changed"):

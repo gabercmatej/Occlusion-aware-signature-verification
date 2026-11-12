@@ -20,9 +20,9 @@ from PIL import Image
 
 import osv
 from osv.preprocessing.stamp_removal import REMOVER_NAME, REMOVER_VERSION, CleaningResult
-from osv.segmentation.stamp_estimate import ESTIMATOR_NAME, ESTIMATOR_VERSION, StampEstimate
+from osv.segmentation.stamp_estimate import StampEstimate
 
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"  # 1.1 (M1b): cleaner.method, method-specific separability definition
 
 STATUS_MEANING = {
     "no_stamp_detected": (
@@ -35,6 +35,15 @@ STATUS_MEANING = {
         "and marked ambiguous. Deleted pixels may have hidden handwriting; nothing was restored."
     ),
     "review": "The cleaner could not separate stamp from handwriting reliably; see reasons.",
+}
+
+SEPARABILITY_DEFINITION = {
+    "chroma": "chroma distance between stamp-hue ink and remaining ink relative to stamp chroma; null if no coloured stamp ink was found",
+    "optical-density": (
+        "sin of the angle between the estimated stamp and pen optical-density directions (0 = same "
+        "direction, 1 = orthogonal); null if no chromatic ink was found. Angle, Fisher-like ratio and "
+        "condition number are in estimate_stats"
+    ),
 }
 
 MASK_FILES = {
@@ -109,7 +118,9 @@ def write_artifacts(original_path, estimate: StampEstimate, result: CleaningResu
         },
         "reviewer_stamp_region": None if region is None else dict(zip(("x", "y", "w", "h"), region)),
         "cleaner": {
-            "estimator": {"name": ESTIMATOR_NAME, "version": ESTIMATOR_VERSION, "parameters": estimate.params_dict()},
+            "method": estimate.method,
+            "estimator": {"name": estimate.estimator_name, "version": estimate.estimator_version,
+                          "parameters": estimate.params_dict()},
             "remover": {"name": REMOVER_NAME, "version": REMOVER_VERSION, "method": "deletion to local paper tone; no inpainting"},
             "uses_only": "input image pixels and the optional reviewer stamp region",
         },
@@ -124,7 +135,7 @@ def write_artifacts(original_path, estimate: StampEstimate, result: CleaningResu
             "ink_fraction_ambiguous": "estimated ink kept but marked ambiguous (possible stamp/handwriting overlap or reviewer-marked region)",
             "ink_fraction_changed": "estimated ink that the cleaner deleted",
             "change_map": "max absolute RGB difference between cleaned and original, per pixel",
-            "separability": "chroma distance between stamp-hue ink and remaining ink relative to stamp chroma; null if no coloured stamp ink was found",
+            "separability": SEPARABILITY_DEFINITION[estimate.method],
         },
         "artifacts": {k: {"file": v, "sha256": sha256_file(out_dir / v)} for k, v in artifacts.items()},
         "environment": {

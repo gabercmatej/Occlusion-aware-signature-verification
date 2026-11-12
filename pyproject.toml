@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "osv"
 version = "0.1.0"
-description = "Occlusion-aware signature verification: stamp cleaning with provenance (M1a)"
+description = "Occlusion-aware signature verification: stamp cleaning with provenance (M1a/M1b)"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

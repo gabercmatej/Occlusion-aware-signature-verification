@@ -67,6 +67,10 @@ class StampEstimate:
     stamp_region: Region | None = None
     stats: dict = field(default_factory=dict)
     params: EstimatorParams = field(default_factory=EstimatorParams)
+    # Which estimator produced this (recorded in provenance; M1b adds a second method).
+    method: str = "chroma"
+    estimator_name: str = ESTIMATOR_NAME
+    estimator_version: str = ESTIMATOR_VERSION
 
     def params_dict(self) -> dict:
         return asdict(self.params)

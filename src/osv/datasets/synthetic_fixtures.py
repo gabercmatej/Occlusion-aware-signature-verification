@@ -71,6 +71,7 @@ class Fixture:
     meta: dict = field(default_factory=dict)
     pen_alpha: np.ndarray | None = None
     stamp_alpha: np.ndarray | None = None
+    mark_mask: np.ndarray | None = None  # M1b matrix only: an extra neutral mark (neither pen nor stamp)
 
 
 def _jitter_colour(rng: np.random.Generator, rgb: tuple[int, int, int], amount: int = 6) -> tuple[int, ...]:
@@ -253,43 +254,5 @@ def make_fixture(kind: str, seed: int, size: tuple[int, int] = (240, 480)) -> Fi
     )
 
 
-def stamp_support_with_margin(fixture: Fixture, margin: int = 2) -> np.ndarray:
-    """Pixels touched by any stamp ink (coverage > 0), dilated by ``margin`` for blur spread."""
-    support = (fixture.stamp_alpha > 0).astype(np.uint8)
-    if margin > 0:
-        support = cv2.dilate(support, np.ones((2 * margin + 1, 2 * margin + 1), np.uint8))
-    return support.astype(bool)
-
-
-def cleaning_metrics(fixture: Fixture, intervention_mask: np.ndarray, change_map: np.ndarray,
-                     ambiguous_mask: np.ndarray) -> dict:
-    """Evaluation-only: compare a cleaner's output with the fixture's ground truth.
-
-    The cleaner never sees these masks; this function runs after cleaning.
-    """
-    stamp_only = fixture.stamp_mask & ~fixture.pen_mask
-    pen_only = fixture.pen_mask & ~fixture.stamp_mask
-    overlap = fixture.overlap_mask
-    deleted = intervention_mask.astype(bool)
-    changed = change_map > 0
-    away = fixture.pen_mask & ~stamp_support_with_margin(fixture)
-
-    def frac(num: np.ndarray, den: np.ndarray) -> float | None:
-        d = int(den.sum())
-        return None if d == 0 else float((num & den).sum()) / d
-
-    return {
-        "stamp_only_pixels": int(stamp_only.sum()),
-        "pen_pixels": int(fixture.pen_mask.sum()),
-        "overlap_pixels": int(overlap.sum()),
-        "stamp_only_removed": frac(deleted, stamp_only),
-        # Stamp-only pixels neither deleted nor flagged ambiguous: residue the reviewer is not warned about.
-        "stamp_only_unflagged": frac(~deleted & ~ambiguous_mask.astype(bool), stamp_only),
-        "pen_loss_outside_overlap": frac(deleted, pen_only),
-        "pen_loss_in_overlap": frac(deleted, overlap),
-        "pen_loss_total": frac(deleted, fixture.pen_mask),
-        "overlap_marked_ambiguous": frac(ambiguous_mask.astype(bool), overlap),
-        "pen_changed_away_from_stamp": int((changed & away).sum()),
-        "deleted_pixels": int(deleted.sum()),
-        "deleted_outside_gt_ink": int((deleted & ~fixture.stamp_mask & ~fixture.pen_mask).sum()),
-    }
+# Metrics moved to osv.evaluation (M1b); re-exported here for compatibility.
+from osv.evaluation.cleaning_metrics import cleaning_metrics, stamp_support_with_margin  # noqa: E402,F401

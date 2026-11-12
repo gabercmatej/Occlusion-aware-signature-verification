@@ -1,9 +1,13 @@
 """Command line entry point.
 
-    python -m osv.cli clean <image> --out <dir> [--stamp-region x,y,w,h]
+    python -m osv.cli clean <image> --out <dir> [--method chroma|optical-density] [--stamp-region x,y,w,h]
     python -m osv.cli make-fixture <kind> --seed N --out <file.png>
     python -m osv.cli measure-fixtures [--seeds 10] [--json <file>]
     python -m osv.cli fixture-figure --out <file.png>
+    python -m osv.cli compare-cleaners --split dev|heldout --out <dir>
+
+``--method`` defaults to ``chroma`` (the M1a/M1a.1 baseline); ``optical-density`` is the M1b
+experiment. The method is chosen by the caller, never per image.
 
 ``clean`` reads only the image and the optional region. ``make-fixture`` writes only the
 image; ground-truth masks stay inside the measurement code and are never written next to it.
@@ -20,6 +24,7 @@ import cv2
 import numpy as np
 from PIL import Image
 
+from osv.cleaning import DEFAULT_METHOD, METHODS, clean_image
 from osv.datasets.synthetic_fixtures import KINDS, cleaning_metrics, make_fixture
 from osv.preprocessing.stamp_removal import remove_stamp
 from osv.provenance import load_rgb, sha256_file, write_artifacts
@@ -40,12 +45,12 @@ def cmd_clean(args: argparse.Namespace) -> int:
     path = Path(args.image)
     sha_before = sha256_file(path)
     rgb, _mode = load_rgb(path)
-    estimate = estimate_stamp(rgb, stamp_region=args.stamp_region)
-    result = remove_stamp(rgb, estimate)
+    estimate, result = clean_image(rgb, method=args.method, stamp_region=args.stamp_region)
     report = write_artifacts(path, estimate, result, args.out)
     if report["input"]["sha256"] != sha_before:
         raise RuntimeError("input changed between reading and writing artifacts")
     m = result.metrics
+    print(f"method: {estimate.method} ({estimate.estimator_name} {estimate.estimator_version})")
     print(f"status: {result.status}")
     print(f"meaning: {report['status_meaning']}")
     print(f"reasons: {', '.join(result.reasons) or '-'}")
@@ -148,8 +153,26 @@ def cmd_figure(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_compare(args: argparse.Namespace) -> int:
+    from osv.evaluation.compare_cleaners import write_comparison
+
+    out = Path(args.out)
+    if out.exists() and any(out.iterdir()):
+        raise FileExistsError(f"output directory {out} is not empty; refusing to overwrite")
+    methods = tuple(m.strip() for m in args.methods.split(","))
+    for m in methods:
+        if m not in METHODS:
+            raise ValueError(f"unknown cleaning method {m!r}; expected one of {tuple(METHODS)}")
+    summary = write_comparison(args.split, out, methods)
+    for key, s in summary["by_method"].items():
+        print(f"{key}: n={s['n']} statuses={s['status_counts']} cases with pen damage={s['cases_with_pen_damage']} "
+              f"(outside overlap {s['cases_with_pen_damage_outside_overlap']})")
+    print(f"wrote {out}/summary.md, summary.json, cases.json, config.json")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
-    ap = argparse.ArgumentParser(prog="osv", description="Occlusion-aware signature verification tools (M1a).")
+    ap = argparse.ArgumentParser(prog="osv", description="Occlusion-aware signature verification tools (M1a/M1b).")
     sub = ap.add_subparsers(dest="command", required=True)
 
     c = sub.add_parser("clean", help="estimate and conservatively remove a coloured stamp; write provenance")
@@ -157,6 +180,8 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("--out", required=True, help="output directory (must be new or empty)")
     c.add_argument("--stamp-region", type=parse_region, default=None, metavar="x,y,w,h",
                    help="optional reviewer-marked stamp rectangle in pixels")
+    c.add_argument("--method", choices=tuple(METHODS), default=DEFAULT_METHOD,
+                   help=f"cleaning method (default {DEFAULT_METHOD}; optical-density is experimental)")
     c.set_defaults(func=cmd_clean)
 
     f = sub.add_parser("make-fixture", help="write one synthetic fixture image (image only)")
@@ -173,6 +198,12 @@ def build_parser() -> argparse.ArgumentParser:
     g = sub.add_parser("fixture-figure", help="write the README comparison figure")
     g.add_argument("--out", required=True)
     g.set_defaults(func=cmd_figure)
+
+    k = sub.add_parser("compare-cleaners", help="compare cleaning methods on the M1b synthetic matrix")
+    k.add_argument("--split", choices=("dev", "heldout"), required=True)
+    k.add_argument("--out", required=True, help="output directory (must be new or empty)")
+    k.add_argument("--methods", default=",".join(METHODS), help="comma-separated methods")
+    k.set_defaults(func=cmd_compare)
     return ap
 
 
