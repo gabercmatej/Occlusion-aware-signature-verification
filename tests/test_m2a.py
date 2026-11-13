@@ -128,9 +128,11 @@ def test_residual_stamp_and_edge_strokes_stay_inside_canvas():
     rgb[-4:, -30:] = 20  # stroke at the far edge
     n = normalise(rgb)
     t = n.transform
-    assert n.darkness[t.offset_y:t.offset_y + 2, t.offset_x:t.offset_x + 10].mean() > 0.2
-    assert n.darkness[t.offset_y + t.target_height - 2:t.offset_y + t.target_height,
-                      t.offset_x + t.target_width - 10:t.offset_x + t.target_width].mean() > 0.5
+    # Both are estimated dark content, so the content box spans them (0.2.0 maps the box, not the crop).
+    (x0, y0), (x1, y1) = np.floor(t.map_points(np.array([[0, 0], [480, 240]], float))).astype(int)
+    assert 0 <= x0 and 0 <= y0 and x1 <= 320 and y1 <= 128
+    assert n.darkness[y0:y0 + 2, x0:x0 + 10].mean() > 0.2
+    assert n.darkness[y1 - 2:y1, x1 - 10:x1].mean() > 0.5
 
 
 # ---------------------------------------------------------------- loading and formats

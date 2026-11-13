@@ -264,11 +264,13 @@ def test_unrelated_mark_does_not_break_coloured_stamp_over_black_pen(kind, seed)
     assert m["stamp_only_removed"] >= FLOOR_STAMP_ONLY_REMOVED[kind]
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "KNOWN LIMITATION: a neutral mark that touches same-colour handwriting looks, by colour "
-    "and connectivity, like a black pen crossing a coloured stamp. The guard cannot tell "
-    "them apart, so pen-coloured strokes can still be deleted. Recorded, not fixed."))
 def test_known_limitation_neutral_mark_touching_same_colour_ink():
+    """Formerly a strict expected failure (M1a.1): the guard cannot tell a neutral mark touching
+    same-colour handwriting from a black pen crossing a coloured stamp, and chroma deleted pen
+    pixels before reporting review. It passes since remover 0.2.0 (M2a.2) only because the
+    remover's own checks reject this proposal and return the original pixels. The guard weakness
+    remains: the same confusion can still delete handwriting whenever the result is reported
+    'cleaned' (see the optical-density expected failure in test_m1b)."""
     fx = make_fixture("blue_stamp_blue_pen", 1)
     mark = (190, 232, 380, 472, 20)
     est, res = run(with_mark(fx.image, mark))

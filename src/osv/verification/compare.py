@@ -11,18 +11,26 @@ There is no path from a raw query to a distance: :func:`compare_query` accepts o
 :class:`CleanedQuery`, which only :func:`prepare_query` creates, and that always runs the
 cleaner. References are never used to reconstruct, inpaint or align the query.
 
-Two distances are reported per reference:
+Two distances are reported per reference, both through :func:`osv.verification.pairs.compare_pair`
+(one support for both sides; canvas padding of either image always excluded):
 
 * ``all_pixels`` — the cleaned query as it is (equal weighting; the control).
-* ``excluding_query_flagged`` — query and reference both described on the same *descriptor
-  support*. The exclusion mask is the query's estimated stamp, cleaner intervention, ambiguous
-  pixels and any reviewer region after normalisation, dilated by ``EXCLUSION_DILATION_PX`` (a
-  margin for mask-boundary uncertainty, not for filter leakage). The descriptor then drops every
-  gradient vote whose finite footprint touches the mask (see
-  :mod:`osv.verification.descriptor`). The support depends only on the mask, so query and
-  references are restricted identically. Excluding a region can also hide exactly the strokes
-  that would expose a forgery; both numbers are shown for that reason. A side without enough
-  retained edge evidence gives no distance and an explicit status, never 0.
+* ``excluding_query_flagged`` — additionally excluding the query's estimated stamp, cleaner
+  intervention, rejected (proposed, not applied) intervention, ambiguous pixels and any reviewer
+  region after normalisation, dilated by ``EXCLUSION_DILATION_PX`` (a margin for mask-boundary
+  uncertainty, not for filter leakage). The descriptor drops every gradient vote whose finite
+  footprint touches an excluded pixel (see :mod:`osv.verification.descriptor`). Excluding a
+  region can also hide exactly the strokes that would expose a forgery; both numbers are shown
+  for that reason.
+
+A side without enough edge evidence, or keeping less than the provisional minimum share of its
+own evidence, gives no distance and an explicit status, never 0 (checkpoint review A3).
+
+Reference spread (A4). Each distance is shown beside a reference spread computed under the same
+rule: ``reference_spread.all_pixels`` pairs references on their common support;
+``reference_spread.excluding_query_flagged`` adds the query's exclusion mask to every pair. With
+an empty query exclusion the two are identical. Never compare a masked distance with the
+all-pixel spread.
 
 ``reference_edge_share_outside_descriptor_support`` is the share of a reference's edge magnitude
 at canvas positions the masked comparison did not use. No registration is performed, so this is
@@ -61,14 +69,17 @@ from osv.segmentation.stamp_estimate import StampEstimate, validate_region
 from osv.verification.descriptor import GridOrientationDescriptor
 from osv.verification.enrolment import Enrolment, descriptor_sha256, enrol
 from osv.verification.manifest import Entry, Manifest, load_manifest
+from osv.verification.pairs import (
+    MIN_RETAINED_EVIDENCE_SHARE, PAIR_SUPPORT_RULE, RETAINED_EVIDENCE_NOTE, compare_pair, describe_normalised,
+)
 
-REPORT_SCHEMA_VERSION = "m2a-case-0.2"
-COMPARISON_VERSION = "0.2.0"
+REPORT_SCHEMA_VERSION = "m2a-case-0.3"
+COMPARISON_VERSION = "0.3.0"
 EXCLUSION_DILATION_PX = 2
 LOW_SUPPORTED_INK_SHARE = 0.5  # provisional, descriptive
 AGGREGATION_RULE = ("median over references with a defined distance; min and max listed; "
                     "no reference weighting")
-EXCLUSION_MASK_RULE = (f"stamp | intervention | ambiguous | reviewer region, after normalisation "
+EXCLUSION_MASK_RULE = (f"stamp | intervention | proposed (not applied) intervention | ambiguous | reviewer region, after normalisation "
                        f"('any' coverage rule), dilated by {EXCLUSION_DILATION_PX} px")
 EXCLUSION_GUARANTEE = (
     "Canvas level only: canvases that agree outside the exclusion mask give the same masked descriptor. "
@@ -87,7 +98,7 @@ GENERAL_LIMITATIONS = (
 STATUS_LIMITATIONS = {
     "no_stamp_detected": "Cleaner status no_stamp_detected: nothing was changed; this does not mean the query is free of stamp ink.",
     "cleaned": "Cleaner status cleaned: pixels were deleted; deleted areas may have hidden handwriting, and handwriting damage is not detectable by the cleaner itself.",
-    "review": "Cleaner status review: stamp and handwriting were not separated reliably; the cleaned image may contain stamp ink or lack handwriting. Distances are diagnostic only.",
+    "review": "Cleaner status review: stamp and handwriting were not separated reliably and no pixel was changed; the compared image still contains any stamp ink. Proposed deletions are only excluded, not applied. Distances are diagnostic only.",
 }
 
 _PREPARED = object()
@@ -127,12 +138,15 @@ def prepare_query(entry: Entry, method: str, params: NormaliseParams = Normalise
     masks = {
         "stamp_mask": estimate.stamp_mask,
         "intervention_mask": result.intervention_mask,
+        "proposed_intervention_mask": result.proposed_intervention_mask,
         "ambiguous_mask": estimate.ambiguous_mask,
         "reviewer_region_mask": region_mask,
         "ink_mask": estimate.ink_mask,
     }
     norm = normalise(result.cleaned, masks, params)
-    flagged = norm.masks["stamp_mask"] | norm.masks["intervention_mask"] | norm.masks["ambiguous_mask"] | norm.masks["reviewer_region_mask"]
+    flagged = np.zeros_like(norm.valid_mask)
+    for name in ("stamp_mask", "intervention_mask", "proposed_intervention_mask", "ambiguous_mask", "reviewer_region_mask"):
+        flagged |= norm.masks[name]
     return CleanedQuery(entry, loaded, method, estimate, result, norm, _dilate(flagged, EXCLUSION_DILATION_PX), _PREPARED)
 
 
@@ -141,33 +155,29 @@ def _r(v: float | None) -> float | None:
 
 
 def compare_query(query: CleanedQuery, enrolment: Enrolment) -> dict:
-    """Per-reference distances and their aggregation. Accepts only a prepared (cleaned) query."""
+    """Per-reference distances, their aggregation and like-for-like spreads. Accepts only a prepared query."""
     if not isinstance(query, CleanedQuery) or query._origin is not _PREPARED:
         raise TypeError("only a query produced by prepare_query (which always cleans) can be compared")
     if query.method != enrolment.cleaner_method:
         raise ValueError("query and references were checked with different cleaner methods")
     desc = enrolment.descriptor
     excl = query.exclusion
-    q_all = desc.extract(query.normalised.darkness)
-    q_res = desc.describe(query.normalised.darkness, exclude=excl)
-    q_masked = q_res.vector
+    qn = query.normalised
+    q_all = describe_normalised(desc, qn)
+    q_res = describe_normalised(desc, qn, excl)
     rows = []
     for ref in enrolment.references:
-        d_all = None if (q_all is None or ref.descriptor is None) else desc.distance(q_all, ref.descriptor)
-        r_res = desc.describe(ref.normalised.darkness, exclude=excl)
-        if not np.array_equal(r_res.support, q_res.support):  # same mask, same rule; defensive
-            raise RuntimeError("query and reference descriptor supports differ")
-        if q_masked is None:
-            status, d_masked = "insufficient_query_edge_evidence", None
-        elif r_res.vector is None:
-            status, d_masked = "insufficient_reference_edge_evidence", None
-        else:
-            status, d_masked = "defined", desc.distance(q_masked, r_res.vector)
-        share = r_res.retained_edge_share
-        rows.append({"reference_id": ref.entry.id, "distance_all_pixels": _r(d_all),
-                     "distance_excluding_query_flagged": _r(d_masked),
-                     "excluding_query_flagged_status": status,
-                     "reference_edge_share_outside_descriptor_support": None if share is None else _r(1.0 - share)})
+        a = compare_pair(desc, qn, ref.normalised)
+        m = compare_pair(desc, qn, ref.normalised, excl)
+        rows.append({"reference_id": ref.entry.id,
+                     "distance_all_pixels": _r(a["distance"]),
+                     "all_pixels_status": a["status"],
+                     "distance_excluding_query_flagged": _r(m["distance"]),
+                     "excluding_query_flagged_status": m["status"],
+                     "query_retained_evidence_share": m["query_retained_evidence_share"],
+                     "reference_retained_evidence_share": m["reference_retained_evidence_share"],
+                     "support_pixels_excluding_query_flagged": m["support_pixels"],
+                     "reference_edge_share_outside_descriptor_support": m["reference_edge_share_outside_support"]})
 
     def agg(key: str) -> dict:
         vals = [r[key] for r in rows if r[key] is not None]
@@ -175,17 +185,32 @@ def compare_query(query: CleanedQuery, enrolment: Enrolment) -> dict:
             return {"n": 0, "median": None, "min": None, "max": None}
         return {"n": len(vals), "median": _r(np.median(vals)), "min": _r(min(vals)), "max": _r(max(vals))}
 
+    masked_spread, masked_pairs = enrolment.spread_under(excl)
     return {
         "per_reference": rows,
         "aggregation_rule": AGGREGATION_RULE,
         "aggregate": {"distance_all_pixels": agg("distance_all_pixels"),
                       "distance_excluding_query_flagged": agg("distance_excluding_query_flagged")},
-        "query_descriptor_sha256": {"all_pixels": descriptor_sha256(q_all), "excluding_query_flagged": descriptor_sha256(q_masked)},
+        "minimum_retained_evidence_share": {"value": MIN_RETAINED_EVIDENCE_SHARE, "note": RETAINED_EVIDENCE_NOTE},
+        "reference_spread": {
+            "all_pixels": {"summary": enrolment.spread(), "support_rule": PAIR_SUPPORT_RULE + " (no query exclusion)",
+                           "compare_with": "distance_all_pixels"},
+            "excluding_query_flagged": {"summary": masked_spread,
+                                        "support_rule": "same support rule as distance_excluding_query_flagged: "
+                                                        + PAIR_SUPPORT_RULE,
+                                        "compare_with": "distance_excluding_query_flagged",
+                                        "pairs": [{"pair": r["pair"], "status": r["status"], "distance": _r(r["distance"])}
+                                                  for r in masked_pairs]},
+            "note": "distances computed under different support rules are not interchangeable",
+        },
+        "query_descriptor_sha256": {"all_pixels": descriptor_sha256(q_all.vector),
+                                    "excluding_query_flagged": descriptor_sha256(q_res.vector)},
         "descriptor_support": {"rule": desc.record()["exclusion"]["rule"],
+                               "pair_rule": PAIR_SUPPORT_RULE,
                                "footprint_radius_px": desc.footprint_radius,
-                               "support_pixels": q_res.support_pixels,
+                               "query_support_pixels": q_res.support_pixels,
                                "canvas_pixels": int(q_res.support.size),
-                               "applied_to": "query and every reference (same canvas positions)",
+                               "applied_to": "query and each reference on one support per pair",
                                "query_status": q_res.status,
                                "guarantee": EXCLUSION_GUARANTEE},
     }
@@ -195,7 +220,8 @@ def query_evidence(query: CleanedQuery, descriptor: GridOrientationDescriptor | 
     """Evidence accounting on the area the masked comparison actually used (descriptor support)."""
     desc = descriptor or GridOrientationDescriptor()
     n = query.normalised
-    res = desc.describe(n.darkness, exclude=query.exclusion)
+    res = describe_normalised(desc, n, query.exclusion)
+    full = describe_normalised(desc, n)
     ink = n.masks["ink_mask"] & n.valid_mask
     ink_n = int(ink.sum())
     area = max(1, int(n.valid_mask.sum()))
@@ -210,6 +236,10 @@ def query_evidence(query: CleanedQuery, descriptor: GridOrientationDescriptor | 
                                                     "NOT proven reliable"),
         "ink_share_outside_exclusion_mask": _r(share(~query.exclusion)),
         "query_edge_share_in_descriptor_support": _r(res.retained_edge_share),
+        "query_edge_evidence": {"own": _r(full.edge_evidence), "in_descriptor_support": _r(res.edge_evidence),
+                                "retained_share": None if full.edge_evidence <= 0 else _r(res.edge_evidence / full.edge_evidence),
+                                "definition": "summed magnitude of strong gradient votes (descriptor edge evidence)"},
+        "content_flags": list(n.content_flags),
         "descriptor_support_share_of_image_area": _r(float((res.support & n.valid_mask).sum()) / area),
         "exclusion_mask_share_of_image_area": _r(float((query.exclusion & n.valid_mask).sum()) / area),
         "exclusion_mask_rule": EXCLUSION_MASK_RULE,
@@ -229,11 +259,23 @@ def review_flags(manifest: Manifest, enrolment: Enrolment, query: CleanedQuery, 
         flags.extend(f"cleaner_reason:{r}" for r in query.result.reasons)
     if query.result.metrics.get("changed_pixels", 0) > 0:
         flags.append("query_pixels_deleted_by_cleaner")
+    if query.result.metrics.get("proposed_intervention_pixels", 0) > 0:
+        flags.append("query_deletion_proposed_but_not_applied")
+    for f in query.normalised.content_flags:
+        flags.append(f"query_{f}")
+    if any(f.startswith("content_box_uncertain") for f in query.normalised.content_flags):
+        flags.append("query_content_box_uncertain")
     share = evidence["ink_share_in_descriptor_support"]
     if share is None or share < LOW_SUPPORTED_INK_SHARE:
         flags.append("low_query_ink_in_descriptor_support")
     if any(r["excluding_query_flagged_status"] != "defined" for r in comparison["per_reference"]):
         flags.append("masked_distance_undefined")
+    if any("retained_evidence" in r["excluding_query_flagged_status"] for r in comparison["per_reference"]):
+        flags.append("insufficient_retained_evidence")
+    if any(r["all_pixels_status"] != "defined" for r in comparison["per_reference"]):
+        flags.append("all_pixels_distance_undefined")
+    if comparison["reference_spread"]["excluding_query_flagged"]["summary"]["n_defined"] == 0:
+        flags.append("comparable_reference_spread_undefined")
     return flags
 
 
@@ -285,6 +327,8 @@ def run_case(manifest_path, out_dir, params: NormaliseParams = NormaliseParams()
     (out_dir / "enrolment.json").write_text(json.dumps(enrol_record, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     status = query.result.status
+    flags = review_flags(manifest, enrolment, query, evidence, comparison)
+    reference_spread = comparison.pop("reference_spread")
     report = {
         "schema_version": REPORT_SCHEMA_VERSION,
         "result_type": RESULT_LABEL,
@@ -308,9 +352,9 @@ def run_case(manifest_path, out_dir, params: NormaliseParams = NormaliseParams()
         },
         "reference_count": len(enrolment.references),
         "reference_count_distinct_files": enrolment.unique_count,
-        "reference_pair_distance_summary": enrolment.spread(),
+        "reference_spread": reference_spread,
         "comparison": comparison,
-        "review_flags": review_flags(manifest, enrolment, query, evidence, comparison),
+        "review_flags": flags,
         "evidence_limitations": list(GENERAL_LIMITATIONS) + [STATUS_LIMITATIONS[status]],
         "labels_note": "manifest labels are not read by this comparison",
         "enrolment_sha256": sha256_file(out_dir / "enrolment.json"),

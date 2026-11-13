@@ -25,9 +25,18 @@ inside the mask were dropped and blurred/gradient contributions leaked outward (
 The guarantee is about the canvas only; see :mod:`osv.verification.compare` for what happens
 before the canvas exists. Unmasked output is identical to 0.1.0.
 
-When the retained edge magnitude is below ``min_total_magnitude`` the descriptor is undefined
-(``None``, status ``insufficient_edge_evidence``); :meth:`distance` refuses undefined inputs
-rather than returning a number.
+Edge evidence (0.3.0, M2a.2). A vote is *strong* when its magnitude reaches
+``max(strong_gradient_floor, noise_factor * paper noise)``, where paper noise is the median
+magnitude over support positions whose darkness is below ``paper_darkness`` (paper, not ink; the
+first draft used the whole support, which put the threshold above stroke edges on dense ink).
+Only support positions are read, so excluded pixels never influence it. ``edge_evidence`` is the summed
+magnitude of strong retained votes. The descriptor is undefined (``None``, status
+``insufficient_edge_evidence``) when ``edge_evidence < min_edge_evidence``, which is what one
+short stroke (20 canvas px, 2 px wide, darkness 0.8) produces; blank paper noise and paper
+shading stay below the floor. The vector itself is unchanged: all retained votes, normalised.
+Canvas padding is not handled here: callers pass it as excluded (see
+:mod:`osv.verification.pairs`). :meth:`distance` refuses undefined inputs rather than returning a
+number. All three evidence constants are provisional, chosen from fictional synthetic images.
 
 The descriptor is deliberately separate from reference aggregation
 (:mod:`osv.verification.compare`), so a learned encoder can later replace it behind the same
@@ -42,7 +51,7 @@ import cv2
 import numpy as np
 
 DESCRIPTOR_NAME = "grid_orientation_histogram"
-DESCRIPTOR_VERSION = "0.2.0"
+DESCRIPTOR_VERSION = "0.3.0"
 SOBEL_RADIUS = 1  # 3x3 kernel
 BLUR_TRUNCATE = 4.0  # kernel radius = ceil(BLUR_TRUNCATE * sigma); OpenCV's own float32 default
 BORDER = cv2.BORDER_REFLECT_101
@@ -60,7 +69,10 @@ class DescriptorParams:
     cell_size: int = 32  # pixels on the normalised canvas
     bins: int = 8  # unsigned orientations over [0, pi)
     pre_blur_sigma: float = 1.0
-    min_total_magnitude: float = 1.0  # below this the image has no usable edge evidence
+    strong_gradient_floor: float = 0.10  # provisional; blank-paper noise peaks near 0.011
+    noise_factor: float = 10.0  # provisional; strong = above 10x the paper's median magnitude
+    paper_darkness: float = 0.10  # provisional; positions this light count as paper for the noise estimate
+    min_edge_evidence: float = 175.0  # provisional; one 20 px stroke (see module docstring)
 
 
 @dataclass(frozen=True)
@@ -71,6 +83,8 @@ class DescriptorResult:
     support_pixels: int
     retained_edge_magnitude: float
     total_edge_magnitude: float  # unmasked, same image
+    edge_evidence: float = 0.0  # summed magnitude of strong retained votes
+    strong_threshold: float = 0.0
 
     @property
     def retained_edge_share(self) -> float | None:
@@ -92,7 +106,11 @@ class GridOrientationDescriptor:
                 "distance": "total variation 0.5 * L1 between magnitude-normalised descriptors, in [0, 1]",
                 "exclusion": {"rule": EXCLUSION_RULE, "footprint_radius_px": self.footprint_radius,
                               "blur_kernel_radius_px": self.blur_radius, "sobel_radius_px": SOBEL_RADIUS,
-                              "undefined_when": f"retained edge magnitude < {self.params.min_total_magnitude}"}}
+                              "undefined_when": (f"edge evidence (summed magnitude of retained votes >= max("
+                                                 f"{self.params.strong_gradient_floor}, {self.params.noise_factor} x "
+                                                 f"median magnitude on paper-like support positions, darkness < {self.params.paper_darkness})) "
+                                                 f"< {self.params.min_edge_evidence}"),
+                              "thresholds_status": "provisional; chosen on fictional synthetic images"}}
 
     def magnitude_and_orientation(self, darkness: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         d = darkness.astype(np.float32)
@@ -146,12 +164,17 @@ class GridOrientationDescriptor:
         np.add.at(hist, (cell * p.bins + lo_bin).ravel(), (mag * (1 - frac)).ravel())
         np.add.at(hist, (cell * p.bins + hi_bin).ravel(), (mag * frac).ravel())
         total = float(hist.sum())
-        defined = total >= p.min_total_magnitude
+        paper = support & (darkness < p.paper_darkness)
+        noise = float(np.median(mag[paper])) if paper.any() else 0.0
+        strong = max(p.strong_gradient_floor, p.noise_factor * noise)
+        evidence = float(mag[support & (mag >= strong)].sum(dtype=np.float64))
+        defined = evidence >= p.min_edge_evidence and total > 0
         return DescriptorResult(vector=hist / total if defined else None,
                                 status="defined" if defined else "insufficient_edge_evidence",
                                 support=support, support_pixels=int(support.sum()),
                                 retained_edge_magnitude=float(mag.sum(dtype=np.float64)),
-                                total_edge_magnitude=total_mag)
+                                total_edge_magnitude=total_mag, edge_evidence=evidence,
+                                strong_threshold=strong)
 
     def extract(self, darkness: np.ndarray, exclude: np.ndarray | None = None) -> np.ndarray | None:
         """Descriptor vector, or ``None`` when no edge evidence remains after exclusion."""

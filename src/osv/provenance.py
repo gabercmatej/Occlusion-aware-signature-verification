@@ -3,6 +3,10 @@
 Writes a byte-identical copy of the original, every mask, the cleaned image, the actual
 change map and ``report.json``. The report has no timestamps or absolute paths, so the
 same input produces byte-identical output.
+
+Every command decodes inputs through :func:`osv.preprocessing.image_io.load_image` (M2a.2):
+EXIF orientation applied, so pixels, masks and reviewer rectangles share one display-oriented
+grid. The stored orientation and dimensions are recorded under ``input.decoded``.
 """
 
 from __future__ import annotations
@@ -19,10 +23,11 @@ import PIL
 from PIL import Image
 
 import osv
+from osv.preprocessing.image_io import load_image
 from osv.preprocessing.stamp_removal import REMOVER_NAME, REMOVER_VERSION, CleaningResult
 from osv.segmentation.stamp_estimate import StampEstimate
 
-SCHEMA_VERSION = "1.1"  # 1.1 (M1b): cleaner.method, method-specific separability definition
+SCHEMA_VERSION = "1.2"  # 1.1 (M1b): cleaner.method; 1.2 (M2a.2): input.decoded, proposed_intervention_mask, review = untouched
 
 STATUS_MEANING = {
     "no_stamp_detected": (
@@ -34,7 +39,9 @@ STATUS_MEANING = {
         "Coloured stamp pixels were deleted (set to the local paper tone). Overlap pixels were kept "
         "and marked ambiguous. Deleted pixels may have hidden handwriting; nothing was restored."
     ),
-    "review": "The cleaner could not separate stamp from handwriting reliably; see reasons.",
+    "review": ("The cleaner could not separate stamp from handwriting reliably; see reasons. No pixel "
+               "was changed: the output equals the decoded input. A rejected deletion, if any, is in "
+               "proposed_intervention_mask and was not applied."),
 }
 
 SEPARABILITY_DEFINITION = {
@@ -51,6 +58,7 @@ MASK_FILES = {
     "intervention_mask": "intervention_mask.png",
     "ink_mask": "ink_mask.png",
     "ambiguous_mask": "ambiguous_mask.png",
+    "proposed_intervention_mask": "proposed_intervention_mask.png",
 }
 
 
@@ -63,11 +71,12 @@ def sha256_file(path: Path) -> str:
 
 
 def load_rgb(path: Path) -> tuple[np.ndarray, str]:
-    """Decode an image file to RGB uint8 without changing the file. EXIF orientation is not applied."""
-    with Image.open(path) as im:
-        mode = im.mode
-        rgb = np.array(im.convert("RGB"), dtype=np.uint8)
-    return rgb, mode
+    """Decode through the single EXIF-aware loader; returns (display-oriented RGB, "RGB").
+
+    Kept for callers of the M1 API. Before M2a.2 this ignored EXIF orientation, so ``clean`` and
+    ``compare-case`` decoded rotated files differently (checkpoint review A6).
+    """
+    return load_image(path).rgb, "RGB"
 
 
 def _save_png(path: Path, array: np.ndarray) -> None:
@@ -92,6 +101,9 @@ def write_artifacts(original_path, estimate: StampEstimate, result: CleaningResu
         raise RuntimeError("copy of the original is not byte-identical")
 
     h, w = result.cleaned.shape[:2]
+    decoded = load_image(original_path)
+    if decoded.sha256 != input_sha or decoded.rgb.shape[:2] != (h, w):
+        raise ValueError("result does not match the decoded, display-oriented input")
     _save_png(out_dir / "cleaned.png", result.cleaned)
     _save_png(out_dir / "change_map.png", result.change_map)
     masks = {
@@ -99,6 +111,7 @@ def write_artifacts(original_path, estimate: StampEstimate, result: CleaningResu
         "intervention_mask": result.intervention_mask,
         "ink_mask": estimate.ink_mask,
         "ambiguous_mask": estimate.ambiguous_mask,
+        "proposed_intervention_mask": result.proposed_intervention_mask,
     }
     for key, name in MASK_FILES.items():
         if masks[key].shape != (h, w):
@@ -115,6 +128,7 @@ def write_artifacts(original_path, estimate: StampEstimate, result: CleaningResu
             "size_bytes": len(original_bytes),
             "width": int(w),
             "height": int(h),
+            "decoded": decoded.record(),
         },
         "reviewer_stamp_region": None if region is None else dict(zip(("x", "y", "w", "h"), region)),
         "cleaner": {
@@ -134,7 +148,10 @@ def write_artifacts(original_path, estimate: StampEstimate, result: CleaningResu
             "ink_fraction_reliable": "estimated ink neither changed nor marked ambiguous; with no_stamp_detected this does not exclude an undetected stamp",
             "ink_fraction_ambiguous": "estimated ink kept but marked ambiguous (possible stamp/handwriting overlap or reviewer-marked region)",
             "ink_fraction_changed": "estimated ink that the cleaner deleted",
-            "change_map": "max absolute RGB difference between cleaned and original, per pixel",
+            "change_map": "max absolute RGB difference between cleaned and decoded original, per pixel",
+            "intervention_mask": "pixels actually deleted (set to paper tone)",
+            "proposed_intervention_mask": "deletion proposed by the estimator but rejected by the remover's own checks; not applied",
+            "dimensions": "width/height are display-oriented (EXIF applied); input.decoded records stored size and orientation",
             "separability": SEPARABILITY_DEFINITION[estimate.method],
         },
         "artifacts": {k: {"file": v, "sha256": sha256_file(out_dir / v)} for k, v in artifacts.items()},

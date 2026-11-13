@@ -79,7 +79,7 @@ def test_footprint_is_explicit_and_recorded():
     assert d.blur_radius == 4  # ceil(4 * sigma), sigma = 1.0; equals OpenCV's own float32 default
     assert d.footprint_radius == 5
     rec = d.record()
-    assert rec["version"] == DESCRIPTOR_VERSION == "0.2.0"
+    assert rec["version"] == DESCRIPTOR_VERSION == "0.3.0"
     assert rec["exclusion"]["footprint_radius_px"] == 5
     assert "reflect-101" in rec["exclusion"]["rule"]
     assert GridOrientationDescriptor(DescriptorParams(pre_blur_sigma=0.0)).footprint_radius == 1
@@ -208,7 +208,7 @@ def test_comparison_reports_undefined_rows_when_query_evidence_is_gone(tmp_path)
         assert row["distance_all_pixels"] is not None
     agg = c["aggregate"]["distance_excluding_query_flagged"]
     assert agg == {"n": 0, "median": None, "min": None, "max": None}
-    assert c["descriptor_support"]["support_pixels"] == 0
+    assert c["descriptor_support"]["query_support_pixels"] == 0
     ev = query_evidence(cq)
     assert ev["query_edge_share_in_descriptor_support"] == 0.0
     assert ev["ink_share_in_descriptor_support"] == 0.0
@@ -220,11 +220,11 @@ def test_comparison_reports_undefined_rows_when_query_evidence_is_gone(tmp_path)
 def test_query_and_reference_use_the_same_support_and_report_it(tmp_path):
     q = render_instance(1, 10, stamped=True)
     r = run_case(make_case(tmp_path, refs_a(3), q), tmp_path / "o")
-    assert r["schema_version"] == "m2a-case-0.2"
+    assert r["schema_version"] == "m2a-case-0.3"
     c = r["comparison"]
     sup = c["descriptor_support"]
     assert sup["footprint_radius_px"] == 5 and "reflect-101" in sup["rule"]
-    assert 0 < sup["support_pixels"] < 128 * 320
+    assert 0 < sup["query_support_pixels"] < 128 * 320
     ev = r["query"]["evidence"]
     assert "descriptor_support_rule" in ev and "exclusion_mask_rule" in ev
     # The support is strictly smaller than the complement of the dilated mask whenever something was flagged.
@@ -237,9 +237,11 @@ def test_query_and_reference_use_the_same_support_and_report_it(tmp_path):
     m = load_manifest(tmp_path / "case" / "case.json")
     e, cq = enrol(m), prepare_query(m.query, "chroma")
     d = e.descriptor
-    qv = d.extract(cq.normalised.darkness, cq.exclusion)
     for ref, row in zip(e.references, c["per_reference"]):
-        assert round(d.distance(qv, d.extract(ref.normalised.darkness, cq.exclusion)), 6) == \
+        # 0.3: one support per pair = query exclusion | padding of either image (pairs.pair_exclusion).
+        excl = cq.exclusion | ~cq.normalised.valid_mask | ~ref.normalised.valid_mask
+        qv = d.extract(cq.normalised.darkness, excl)
+        assert round(d.distance(qv, d.extract(ref.normalised.darkness, excl)), 6) == \
             row["distance_excluding_query_flagged"]
 
 

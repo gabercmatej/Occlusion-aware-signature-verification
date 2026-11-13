@@ -33,7 +33,8 @@ from PIL import Image
 from osv.cleaning import DEFAULT_METHOD, METHODS, clean_image
 from osv.datasets.synthetic_fixtures import KINDS, cleaning_metrics, make_fixture
 from osv.preprocessing.stamp_removal import remove_stamp
-from osv.provenance import load_rgb, sha256_file, write_artifacts
+from osv.preprocessing.image_io import load_image
+from osv.provenance import sha256_file, write_artifacts
 from osv.segmentation.stamp_estimate import estimate_stamp
 
 
@@ -50,8 +51,8 @@ def parse_region(text: str) -> tuple[int, int, int, int]:
 def cmd_clean(args: argparse.Namespace) -> int:
     path = Path(args.image)
     sha_before = sha256_file(path)
-    rgb, _mode = load_rgb(path)
-    estimate, result = clean_image(rgb, method=args.method, stamp_region=args.stamp_region)
+    loaded = load_image(path)  # the same EXIF-aware loader as compare-case
+    estimate, result = clean_image(loaded.rgb, method=args.method, stamp_region=args.stamp_region)
     report = write_artifacts(path, estimate, result, args.out)
     if report["input"]["sha256"] != sha_before:
         raise RuntimeError("input changed between reading and writing artifacts")
@@ -60,7 +61,9 @@ def cmd_clean(args: argparse.Namespace) -> int:
     print(f"status: {result.status}")
     print(f"meaning: {report['status_meaning']}")
     print(f"reasons: {', '.join(result.reasons) or '-'}")
-    print(f"changed pixels: {m['changed_pixels']} of {m['image_pixels']}")
+    print(f"changed pixels: {m['changed_pixels']} of {m['image_pixels']}"
+          + (f" (proposed deletion of {m['proposed_intervention_pixels']} px rejected, not applied)"
+             if m.get("proposed_intervention_pixels") else ""))
     print(f"ink reliable/ambiguous/changed: {m['ink_fraction_reliable']} / {m['ink_fraction_ambiguous']} / {m['ink_fraction_changed']}")
     print(f"artifacts: {args.out}")
     return 0
@@ -196,15 +199,19 @@ def cmd_compare_case(args: argparse.Namespace) -> int:
           f"({r['reference_count_distinct_files']} distinct files)")
     print(f"cleaner: {q['cleaner']['method']} -> {q['cleaner']['status']} ({', '.join(q['cleaner']['reasons']) or '-'})")
     print(f"query ink share in descriptor support (not proven reliable): {q['evidence']['ink_share_in_descriptor_support']}")
-    print("| reference | distance all pixels | distance excl. query-flagged | ref edge share outside support |")
-    print("|---|---|---|---|")
+    print("| reference | distance all pixels | distance excl. query-flagged | query evidence kept | ref edge share outside support |")
+    print("|---|---|---|---|---|")
     for row in c["per_reference"]:
-        print(f"| {row['reference_id']} | {row['distance_all_pixels']} | {row['distance_excluding_query_flagged'] if row['distance_excluding_query_flagged'] is not None else row['excluding_query_flagged_status']} | "
+        a = row["distance_all_pixels"] if row["distance_all_pixels"] is not None else row["all_pixels_status"]
+        m = row["distance_excluding_query_flagged"] if row["distance_excluding_query_flagged"] is not None else row["excluding_query_flagged_status"]
+        print(f"| {row['reference_id']} | {a} | {m} | {row['query_retained_evidence_share']} | "
               f"{row['reference_edge_share_outside_descriptor_support']} |")
     a = c["aggregate"]
     print(f"aggregate ({c['aggregation_rule']}): all pixels median {a['distance_all_pixels']['median']}, "
           f"excluding flagged median {a['distance_excluding_query_flagged']['median']}")
-    print(f"reference pair distances: {r['reference_pair_distance_summary']}")
+    sp = r["reference_spread"]
+    print(f"reference spread, all pixels (compare with all-pixel distances): {sp['all_pixels']['summary']}")
+    print(f"reference spread, same support as masked distances: {sp['excluding_query_flagged']['summary']}")
     print(f"review flags: {', '.join(r['review_flags'])}")
     print(f"wrote {args.out}/case_report.json, enrolment.json, query_cleaning/, normalised/, references/")
     return 0

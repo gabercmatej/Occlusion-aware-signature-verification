@@ -12,7 +12,7 @@ from osv.provenance import sha256_file
 
 EXPECTED = {
     "cleaned.png", "change_map.png", "stamp_mask.png", "intervention_mask.png",
-    "ink_mask.png", "ambiguous_mask.png", "report.json",
+    "ink_mask.png", "ambiguous_mask.png", "proposed_intervention_mask.png", "report.json",
 }
 
 
@@ -45,7 +45,7 @@ def test_artifacts_complete_and_consistent(tmp_path, kind):
     assert (out / "original.png").read_bytes() == raw_before
     assert report["input"]["sha256"] == sha256_file(src)
     assert report["input"]["unchanged_after_run"] is True
-    assert report["schema_version"] == "1.1"  # 1.1 (M1b): additive cleaner.method field
+    assert report["schema_version"] == "1.2"  # 1.1 (M1b): cleaner.method; 1.2 (M2a.2): decoded input, proposed mask
     for key in ("status", "reasons", "separability", "metrics", "cleaner", "artifacts", "status_meaning"):
         assert key in report
     for k in ("ink_fraction_reliable", "ink_fraction_ambiguous", "ink_fraction_changed"):

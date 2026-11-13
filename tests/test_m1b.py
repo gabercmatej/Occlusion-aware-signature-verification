@@ -237,8 +237,8 @@ def test_reported_unrelated_mark_case_both_methods(method, seed):
 
 @pytest.mark.xfail(strict=True, reason=(
     "KNOWN LIMITATION (both methods): a neutral mark touching same-colour handwriting looks like "
-    "a neutral pen crossing a coloured stamp. Chroma deletes 695 pen pixels and reports review; "
-    "optical density deletes 5,693 pen pixels and reports cleaned. Recorded, not fixed."))
+    "a neutral pen crossing a coloured stamp. Optical density deletes 5,693 pen pixels and reports "
+    "cleaned. (Chroma's deletion was reported review; since remover 0.2.0 it is reverted.) Recorded, not fixed."))
 @pytest.mark.parametrize("method", ["optical-density"])
 def test_known_limitation_touching_mark_optical_density(method):
     fx = make_fixture("blue_stamp_blue_pen", 1)
@@ -271,7 +271,7 @@ def test_cli_method_recorded_in_provenance(tmp_path):
         assert k in rb["estimate_stats"]
     assert "optical-density" in rb["definitions"]["separability"]
     assert (tmp_path / "b" / "original.png").read_bytes() == src.read_bytes()
-    assert rb["schema_version"] == "1.1"
+    assert rb["schema_version"] == "1.2"
 
 
 def test_cli_od_byte_identical_reruns(tmp_path):
