@@ -24,4 +24,4 @@ All eight core papers and the additional F0 foundation paper are downloaded. Fil
 
 The notes have assistant-prepared evidence, not completed personal reading. Start with P1 on October 17. F0 and P5 share October 18, so read F0 selectively. Survey P7/P8 on October 23; defer their full mathematical treatment if it threatens the proposal deadline.
 
-See [note-taking instructions](notes/README.md), [the live plan](../PLAN.md), and [the matrix](literature_matrix.csv). The historical spreadsheet has been archived; the CSV is the current matrix. All PDF links in this guide are local.
+See [note-taking instructions](notes/README.md), [the build plan](../BUILD_PLAN.md), and [the matrix](literature_matrix.csv). The historical spreadsheet has been archived; the CSV is the current matrix. All PDF links in this guide are local.

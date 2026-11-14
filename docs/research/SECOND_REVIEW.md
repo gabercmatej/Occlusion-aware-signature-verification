@@ -45,7 +45,7 @@ DetailSemNet's in-dataset EER is 0.58–2.11%, but trained on one dataset and te
 
 **D. Learning directions.** Shortlist and ranking are in the build plan (section 11). The strongest new fact: the [Mendeley "Offline Handwriting Signature" set](https://data.mendeley.com/datasets/ghvhwcpkbg/1) (420 writers × 30 genuine, CC BY 4.0) has the same order of writers as the 531 development writers F0 used to train SigNet. A SigNet-style encoder on clearly licensed data is therefore a small local training job, not a cloud project. Its quality is unknown until inspected.
 
-**E. Permissions.** See the register below and the decision table in the plan. Unresolved: CEDAR terms (official page returned 403), BHSig260 terms (no official terms page found; the IAPR TC4 list links a third-party mirror), whether GPDS restrictions bind trained weights (the licence is silent; the model author asserts the restriction), and whether the cousin's use is commercial.
+**E. Permissions.** See the register below and the decision table in the plan. Unresolved: CEDAR terms (official page returned 403), BHSig260 terms (no official terms page found; the IAPR TC4 list links a third-party mirror), whether GPDS restrictions bind trained weights (the licence is silent; the model author asserts the restriction), and whether the partner's use is commercial.
 
 **F. Evaluation.** Staged protocol in the plan (section 10). The points that most change the design: stamp templates must be split like writers; the same signature must not cross splits under different corruptions; the fixture generator must not use the cleaner's own mixing model alone, or the test is circular; error must be reported against retained coverage, not only overall.
 
@@ -54,7 +54,7 @@ DetailSemNet's in-dataset EER is 0.58–2.11%, but trained on one dataset and te
 | | A. First-review path | B. Evidence-first, permissive | C. Existing local matcher | D. Fully learned |
 |---|---|---|---|---|
 | Pipeline | Colour cleaner → frozen SigNet → window scores → weighted fusion | Colour cleaner with honest failure states and optional stamp-region hint → permissive encoder (DINOv2 tokens, later own encoder) → local matching with reliability → coverage and reference-relative score → review | Colour cleaner → DetailSemNet weights, reliability as EMD token weights | Learned segmenter or restorer → trained occlusion-aware regional network |
-| Fit to cousin's task | Medium; blocked if use is commercial | High; no permission dependency for delivery | Medium; unknown transfer to new writers | High in principle, late |
+| Fit to partner's task | Medium; blocked if use is commercial | High; no permission dependency for delivery | Medium; unknown transfer to new writers | High in principle, late |
 | Evidence strength | Encoder strong on clean benchmarks; windows unsupported | Cleaner and provenance sound; comparator unproven for skilled forgeries | Strong in-dataset, weak cross-dataset | P1 only (33% → 23% EER, still above 18% clean) |
 | Main failure modes | Licence; window misalignment; same-colour stamps | Generic features may not see forgeries | Old CUDA-pinned code may not run on the M5; five-writer test sets | Needs data and long training; generative edits |
 | Data and permissions | GPDS-derived weights | Apache-2.0 weights; CC BY data for own training | MIT code; weight training data terms unstated | Agreements, paired data |
@@ -65,11 +65,11 @@ DetailSemNet's in-dataset EER is 0.58–2.11%, but trained on one dataset and te
 ## 5. Recommendations
 
 1. **Earliest credible prototype: path B.** Provenance-preserving cleaner, reviewer-visible evidence, a comparison whose score is shown only if a benchmark gate passes, coverage and review flags. It is the only path whose delivery does not depend on an unresolved licence.
-2. **Fallback.** If generic features fail the gate, train the small clean-licence encoder (modest local training, owner approval needed) and meanwhile deliver the workbench with aligned side-by-side evidence, coverage and flags but no identity score. If colour cleaning fails on the cousin's stamps, promote learned stamp/ink segmentation from stretch to research.
+2. **Fallback.** If generic features fail the gate, train the small clean-licence encoder (modest local training, owner approval needed) and meanwhile deliver the workbench with aligned side-by-side evidence, coverage and flags but no identity score. If colour cleaning fails on the partner's stamps, promote learned stamp/ink segmentation from stretch to research.
 3. **Research path.** H1: reliability-aware local comparison is safer than global comparison of the cleaned image at matched evidence. H2: cleaning provenance predicts where the comparator fails, so a provenance-based review rule beats a score-only one. Both are adaptations of existing ideas to an untested setting; novelty is not claimed.
 4. **Final vision, conditional.** A trained occlusion-aware local verifier with a learned stamp/ink segmenter, only if H1 holds on frozen features and the segmenter beats the classical cleaner on physical samples.
 
-**Is this the best supported practical choice among those examined?** Yes for delivery order and permissions; not yet for comparison quality, which no examined source settles for our setting. It would be overturned by: the cousin's use being non-commercial with GPDS-derived weights acceptable and SigNet clearly ahead on the benchmark (use path A's encoder inside B's structure); DetailSemNet running locally and transferring well to unseen writers (adopt C's matcher); or customer stamps being mostly black or same-ink (the cleaner choice changes before anything else).
+**Is this the best supported practical choice among those examined?** Yes for delivery order and permissions; not yet for comparison quality, which no examined source settles for our setting. It would be overturned by: the partner's use being non-commercial with GPDS-derived weights acceptable and SigNet clearly ahead on the benchmark (use path A's encoder inside B's structure); DetailSemNet running locally and transferring well to unseen writers (adopt C's matcher); or customer stamps being mostly black or same-ink (the cleaner choice changes before anything else).
 
 ## 6. Evidence register
 
@@ -96,8 +96,8 @@ All pages consulted on 11 November 2026 through a summarising fetch tool; wordin
 
 | Uncertainty | Resolved by |
 |---|---|
-| Commercial status of the cousin's use | Owner/cousin answer |
-| Stamp and pen colours; whether a few stamps recur; colour or grayscale scans | Cousin answer or three sample scans viewed locally with authorization |
+| Commercial status of the partner's use | Owner/partner answer |
+| Stamp and pen colours; whether a few stamps recur; colour or grayscale scans | Partner answer or three sample scans viewed locally with authorization |
 | Whether GPDS terms bind published weights | GPDS group or model authors; until then treated as non-commercial research only |
 | CEDAR, BHSig260, MCYT, StaVer terms | Owner reads the official pages or the professor advises; not inferable from mirrors |
 | Whether any permissive encoder separates skilled forgeries | Benchmark gate (plan M2b) |
@@ -113,7 +113,7 @@ All pages consulted on 11 November 2026 through a summarising fetch tool; wordin
 - **Window scoring on SigNet:** unsupported by its architecture and training.
 - **Self-supervised pretraining now:** weak published results; revisit only if labelled-writer training fails.
 - **Riemannian, CCA and hybrid transformer verifiers (P7, P8, P2):** no released weights located; no occlusion evidence; high cost.
-- **Automatic signature detection in full documents:** manual crop first; revisit after cousin feedback.
+- **Automatic signature detection in full documents:** manual crop first; revisit after partner feedback.
 - **Joint restoration and verification:** deferred until a segmenter is shown to help.
 
 ## 9. Counts and limitations

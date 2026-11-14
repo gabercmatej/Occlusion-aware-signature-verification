@@ -4,7 +4,7 @@
 
 ## Question
 
-Which pipeline gives the cousin a useful local prototype soonest, given mandatory stamp removal, reliability-weighted comparison, an Apple M5 with 16 GB, and no confirmed data or labels?
+Which pipeline gives the partner a useful local prototype soonest, given mandatory stamp removal, reliability-weighted comparison, an Apple M5 with 16 GB, and no confirmed data or labels?
 
 ## Sources checked
 
@@ -36,7 +36,7 @@ Which pipeline gives the cousin a useful local prototype soonest, given mandator
 
 ## Uncertainties
 
-- Whether GPDS-trained weights may be used in the cousin's setting: the license does not address trained models. Treat SigNet output as diagnostic until cleared.
+- Whether GPDS-trained weights may be used in the partner's setting: the license does not address trained models. Treat SigNet output as diagnostic until cleared.
 - Whether a whole-signature encoder gives meaningful scores on windows. Untested; the plan gates on a signal check.
 - Whether color separation works on the customer's stamps. Blue pen under a blue stamp, or black stamps, will defeat it.
 - CEDAR and BHSig260 terms, the DINOv2 and torchvision weight licenses, and PyTorch loading of the 2019-era weights were not checked this session.

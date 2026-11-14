@@ -6,7 +6,7 @@
 
 Offline signature queries on real documents commonly overlap stamps, while genuine references are expected to be clean. Stamps may disrupt similarity measurements; generative restoration can remove or invent identity-bearing strokes. The proposed study tests whether scoring visible regional evidence improves verification under controlled stamp interference while retaining skilled-forgery rejection. Public data with synthetic overlays provide an independent core study; authorized company documents provide a separate transfer pilot, conditional on available references and reliable labels.
 
-**Confirmed by reader:** writer-independent training using public data; separate cousin/company real-world testing; stamped queries are common; clean references are a working assumption to confirm. Synthetic data may help training, not only evaluation; digital-versus-physical differences should be examined separately.
+**Confirmed by reader:** writer-independent training using public data; separate partner-company real-world testing; stamped queries are common; clean references are a working assumption to confirm. Synthetic data may help training, not only evaluation; digital-versus-physical differences should be examined separately.
 
 ## Recommended questions for the draft — supervisor review pending
 
@@ -73,7 +73,7 @@ This sheet supplies scope, data and experiment bullets for the full proposal. Ne
 
 ## Scope decision for tomorrow — October 27
 
-**Reader's priority:** a useful, reliable solution to the cousin's stamped-signature workflow is more important than novelty for its own sake. The reader delegates a recommendation and wants a few alternative main questions available for the professor. Architecture development remains an interest, not an obligation to invent a new backbone.
+**Reader's priority:** a useful, reliable solution to the partner's stamped-signature workflow is more important than novelty for its own sake. The reader delegates a recommendation and wants a few alternative main questions available for the professor. Architecture development remains an interest, not an obligation to invent a new backbone.
 
 **Recommendation:** make occlusion-aware regional verification the main investigation, supported by one CNN baseline and at most one selected hybrid architecture comparison. P6 directly motivates spatial score fusion; P2 motivates a bounded hybrid alternative but does not establish stamp robustness. Which model is operationally best remains an empirical question. Do not commit to a full Cartesian product of architectures, losses, cleaners, mask methods and training recipes.
 

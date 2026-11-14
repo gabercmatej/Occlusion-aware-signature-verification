@@ -22,6 +22,5 @@ experiments/results/*
 literature/papers/*.pdf
 !literature/papers/README.md
 
-# Local agent settings and research snapshots.
-.claude/
+# Local research snapshots.
 bachelor_thesis_roadmap_current.pdf

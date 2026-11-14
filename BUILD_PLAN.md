@@ -1,13 +1,13 @@
 # Signature Verification Build Plan
 
-**Status — 11 November 2026:** second research review complete; this roadmap replaces the M0 plan. No product code, environment, trained model or measured result exists yet. Evidence and sources: [second review](docs/research/SECOND_REVIEW.md); history: [initial review](docs/research/INITIAL_REVIEW.md). This file is the single authoritative plan. Documents under `docs/superpowers/` are background only.
+**Status — 11 November 2026:** second research review complete; this roadmap replaces the M0 plan. Stamp cleaning (M1a, M1b) and the classical comparison baseline (M2a) have since been implemented and tested on synthetic fixtures (see README); no trained model or result on real signatures exists yet. Evidence and sources: [second review](docs/research/SECOND_REVIEW.md); history: [initial review](docs/research/INITIAL_REVIEW.md). This file is the single authoritative plan. Documents under `docs/superpowers/` are background only.
 
 Labels used below: **[C]** needed for the early customer prototype, **[R]** research development, **[S]** optional stretch work that needs evidence first.
 
 ## 1. Goals
 
-1. **Early local prototype for the cousin's document review.** It helps a reviewer inspect a stamped signature against genuine references: what the stamp covered, what cleaning changed, how the remaining evidence compares, and when evidence is too weak to say anything. It must be useful before any research milestone finishes.
-2. **A substantial research and deep-learning project** for master's and internship applications, with a credible route to a thesis. The thesis is to be discussed with the professor in January 2027; approval, scope and novelty are not established.
+1. **Early local prototype for the partner's document review.** It helps a reviewer inspect a stamped signature against genuine references: what the stamp covered, what cleaning changed, how the remaining evidence compares, and when evidence is too weak to say anything. It must be useful before any research milestone finishes.
+2. **A substantial research and deep-learning project** for master's and internship applications, with a credible route to a thesis. Scope and novelty are still to be established.
 
 The two goals share one codebase. Each milestone is independently useful, and the customer prototype (M1–M3) does not depend on any research or stretch milestone.
 
@@ -41,7 +41,7 @@ Assumed until corrected: inputs are full documents and signature crops, genuine 
 
 Unconfirmed, in order of effect on the plan:
 
-1. Is the cousin's use commercial or operational? (Decides which weights and datasets may appear in the customer build.)
+1. Is the partner's use commercial or operational? (Decides which weights and datasets may appear in the customer build.)
 2. Stamp and pen colours; colour or grayscale scans; do a few stamp designs recur? (Decides whether the classical cleaner is enough.)
 3. Decision on the evaluation-only uncleaned control.
 4. May public datasets and weights be downloaded for local research once their terms are read? Which terms does the owner accept?
@@ -55,7 +55,7 @@ None of these blocks M1a.
 | Status | Statement |
 |---|---|
 | Supported by primary evidence | Stamps degrade verification and cleaning recovers part of the loss for one model (P1). Synthetic-only stamp data transfers poorly to physical scans (P3). Signature features trained on about 500 writers transfer to unseen writers (F0). Local patch matching helps in-dataset, and cross-dataset error is several times higher (DetailSemNet). DINOv2 code and weights are Apache-2.0. A CC BY 4.0 set of 420 writers' genuine signatures exists |
-| Architectural hypotheses | Colour separation is adequate for the cousin's stamps. Provenance-based reliability improves comparison. Local matching with reliability is safer than global comparison. Generic patch features carry useful signature evidence |
+| Architectural hypotheses | Colour separation is adequate for the partner's stamps. Provenance-based reliability improves comparison. Local matching with reliability is safer than global comparison. Generic patch features carry useful signature evidence |
 | Untested claims | Everything about accuracy, speed and memory on the M5. Whether any permissive encoder separates skilled forgeries. Whether the cleaner can flag its own failures. Whether old checkpoints load in a current PyTorch |
 
 ## 5. Selected architecture
@@ -120,7 +120,7 @@ REVIEWER UI [C]   original / cleaned / masks / references side by side; notes; l
 
 **Inference never receives ground truth.** Synthetic masks are used only by tests and metrics. The cleaning API accepts an image and an optional reviewer region, nothing else.
 
-**Upgrade routes, in order of cost:** optical-density unmixing (M1b) → stamp-template registration if the cousin's stamps recur → learned stamp/ink segmentation trained on synthetic overlaps (M7). Restoration of hidden strokes is not on the route; no examined method can know what a stamp hid.
+**Upgrade routes, in order of cost:** optical-density unmixing (M1b) → stamp-template registration if the partner's stamps recur → learned stamp/ink segmentation trained on synthetic overlaps (M7). Restoration of hidden strokes is not on the route; no examined method can know what a stamp hid.
 
 ## 8. Comparison, reliability and review [C → R]
 
@@ -145,7 +145,7 @@ Controls kept in every experiment: equal weighting; masking the same regions on 
 
 Code, checkpoint, training data and evaluation data are tracked separately. "Diagnostic only" is not a licence category. Nothing below has been downloaded or accepted.
 
-| Artifact | Terms found (11 Nov 2026) | Local research | Public demo | Cousin's operational use | Open point |
+| Artifact | Terms found (11 Nov 2026) | Local research | Public demo | Partner's operational use | Open point |
 |---|---|---|---|---|---|
 | DINOv2 ViT-S/14 code and weights | Apache-2.0 | Yes | Yes | Yes, under Apache terms | No signature-specific evidence |
 | sigver code | BSD-3 | Yes | Yes | Code only | — |
@@ -162,8 +162,8 @@ Code, checkpoint, training data and evaluation data are tracked separately. "Dia
 **Branches.**
 
 - *Commercial status unknown (today):* the customer build uses only rows marked "Yes" in the last column. Research benchmarks may use more, each recorded with its terms.
-- *Cousin's use confirmed non-commercial and terms clarified:* a GPDS-derived encoder may be considered for the customer build if it wins the benchmark.
-- *Cousin's use commercial:* permissive weights and own-trained models on CC BY data only.
+- *Partner's use confirmed non-commercial and terms clarified:* a GPDS-derived encoder may be considered for the customer build if it wins the benchmark.
+- *Partner's use commercial:* permissive weights and own-trained models on CC BY data only.
 - *No skilled-forgery dataset with acceptable terms:* skilled-forgery claims are not made; results are limited to random impostors and stated as such.
 
 ## 10. Evaluation protocol
@@ -202,7 +202,7 @@ Code, checkpoint, training data and evaluation data are tracked separately. "Dia
 | Score display (M2b) | An encoder's score is shown in the product only if it beats the classical floor on skilled forgeries with intervals that do not overlap, on writers unseen in fitting | A score that cannot beat edge histograms would mislead |
 | Reliability safety (M4) | Reliability-aware comparison must not raise FAR at matched FRR against equal weighting | R3 must not weaken forgery rejection |
 | Cleaning benefit (M4) | Cleaned queries recover a clear share of the gap between stamped *(control)* and clean queries; P1's recovery (10 of 15 EER points) is the reference level | Only published comparison available |
-| Interactive use (M3) | A query against five references completes in a few seconds on the M5 | Reviewer workflow; to be confirmed with the cousin |
+| Interactive use (M3) | A query against five references completes in a few seconds on the M5 | Reviewer workflow; to be confirmed with the partner |
 
 ## 11. Research hypotheses and learning directions [R]
 
@@ -222,7 +222,7 @@ Classification: building the pipeline is engineering integration; running SigNet
 | D6 Joint restoration and verification | Residual stamp interference | P1 only; generative risk | Paired data | Beyond local budget | Not before D4 succeeds | — |
 | D7 Self-supervised signature pretraining | Too few labelled writers | SWIS: weak results | Unlabelled signatures | Hours | Only if D2 fails for lack of writers | — |
 
-Order: D1 → D2 → D3, with D4 promoted if the cousin's stamps defeat colour separation. D5 is the ambitious step and depends on H1.
+Order: D1 → D2 → D3, with D4 promoted if the partner's stamps defeat colour separation. D5 is the ambitious step and depends on H1.
 
 ## 12. Compute and resources
 
@@ -241,7 +241,7 @@ Effort is in coding sessions (one bounded objective, roughly one to two hours of
 | M1b | C | Optical-density cleaner variant, stamp-region hint in the CLI, cleaning metrics, comparison table; protocol sheet for the physical set E3 | M1a | Both cleaners measured on all fixture kinds and, when available, E3; better one chosen per case; failure cases documented | 2 |
 | M2a | C | Normalisation, encoder interface, classical floor + DINOv2 (global and patch tokens), reference enrolment, similarity relative to reference spread, coverage, review flags, `compare` command | M1a; approval for PyTorch and weight download | Runs end to end on fixtures; identical image ranks first (sanity only); masks transform with the image; latency and memory recorded | 2–3 |
 | M2b | C (gate) | Clean benchmark E1 on permitted data: manifest, writer splits, metrics with intervals; encoder comparison | M2a; dataset decision | Report produced on the final split once; score-display gate decided and recorded | 2–3 |
-| M3 | C | Local reviewer UI and case export; feedback form; **prototype v0.1 delivered** | M1b, M2a (M2b decides whether a score is shown) | Cousin completes a small batch locally; every case shows original, cleaned, masks, coverage and flags; nothing leaves the machine | 2–3 |
+| M3 | C | Local reviewer UI and case export; feedback form; **prototype v0.1 delivered** | M1b, M2a (M2b decides whether a score is shown) | Partner completes a small batch locally; every case shows original, cleaned, masks, coverage and flags; nothing leaves the machine | 2–3 |
 | M4 | R | Stamped benchmark E2/E3; full ablation grid; calibration of review bounds; H2 test | M2b, M1b | Ablation table with intervals; coverage–error curves; reliability safety gate evaluated | 3–4 |
 | M5 | R | Reliability-aware local matching on frozen tokens; H1 test | M4 | H1 supported, rejected or inconclusive, written up with failure cases | 2–3 |
 | M6 | R | D1 comparator, then D2 encoder, then D3 stamp-aware training | M2b; training approval | Each step compared with its predecessor on validation, then once on test | 4–6 |
@@ -274,7 +274,7 @@ First useful delivery (M1a → M3) is about 9–13 sessions under the stated ass
 
 - new: `pyproject.toml`; `src/osv/__init__.py`; `src/osv/datasets/synthetic_fixtures.py`; `src/osv/segmentation/stamp_estimate.py`; `src/osv/preprocessing/stamp_removal.py`; `src/osv/provenance.py`; `src/osv/cli.py`; `tests/test_fixtures.py`, `tests/test_cleaning.py`, `tests/test_provenance.py`; one fixture figure under `docs/assets/`;
 - moved: the empty placeholder folders under `src/` into `src/osv/`;
-- updated: `README.md` (progress row, exact command), this plan's current state, `docs/SESSION_LOG.md`.
+- updated: `README.md` (progress row, exact command) and this plan's current state.
 
 **Interfaces.**
 
@@ -314,7 +314,7 @@ Artifacts in `<dir>`: byte-identical copy of the original, `stamp_mask.png`, `cl
 - Invariants on every fixture: original bytes and hash intact; all masks share the image size; change map non-zero only inside the intervention mask; intervention mask inside the stamp mask; cleaned differs from the input exactly where the change map is non-zero; same input gives byte-identical output.
 - The cleaning functions accept no ground-truth argument (checked by signature).
 
-**Exit.** All tests pass; the measured numbers are written into the session log; the README command is the one actually run.
+**Exit.** All tests pass; the measured numbers are recorded; the README command is the one actually run.
 
 ## 15. Reproducibility and records
 
@@ -329,7 +329,7 @@ Workflow for v0.1: choose or create a writer → add references (quality summary
 
 The screen never shows "genuine" or "forged". Low-evidence cases show the reason before any score.
 
-Feedback worth collecting from the cousin, on fictional or authorized samples: which stamp and pen colours occur; whether the cleaned image is easier or harder to judge than the original; where the tool flagged review and the reviewer disagreed, and the reverse; whether drawing the crop and stamp region is acceptable effort; how many references are typically available; what would make the export useful.
+Feedback worth collecting from the partner, on fictional or authorized samples: which stamp and pen colours occur; whether the cleaned image is easier or harder to judge than the original; where the tool flagged review and the reviewer disagreed, and the reverse; whether drawing the crop and stamp region is acceptable effort; how many references are typically available; what would make the export useful.
 
 ## 17. Portfolio evidence
 
@@ -352,7 +352,5 @@ Each coding prompt names one milestone or sub-task, its allowed files, an observ
 
 ## References
 
-- [Second review with evidence register](docs/research/SECOND_REVIEW.md) · [initial review](docs/research/INITIAL_REVIEW.md) · [session log](docs/SESSION_LOG.md)
+- [Second review with evidence register](docs/research/SECOND_REVIEW.md) · [initial review](docs/research/INITIAL_REVIEW.md)
 - [Literature matrix](literature/literature_matrix.csv) · [note index](literature/notes/README.md) · [experiment registry](EXPERIMENTS.md)
-- [Starting instructions](docs/GETTING_STARTED.md) · [coordination workflow](docs/CLAUDE_WORKFLOW.md)
-- Background only: [November 10 design](docs/superpowers/specs/2026-11-10-customer-verification-design.md), [earlier detailed plan](docs/superpowers/plans/2026-11-10-customer-verification.md)

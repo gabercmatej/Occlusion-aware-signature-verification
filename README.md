@@ -152,7 +152,7 @@ If a human comparison is run after the practical baseline, reviewers and the fro
 
 ## Customer pilot and limitations
 
-The cousin supports the project and will supply both full documents and cropped signatures. The initial sample has not yet been received or inspected. The pilot needs confirmed writer identities, genuine references and reliable authenticity labels. Keep final company evaluation separate from public development data. If only genuine queries are available, measure genuine rejection and workflow behavior without claiming forgery-acceptance rates. Any imitation collection must document provenance and distinguish human imitations from ordinary other-writer signatures and digital manipulations.
+A partner company supports the project and will supply both full documents and cropped signatures. The initial sample has not yet been received or inspected. The pilot needs confirmed writer identities, genuine references and reliable authenticity labels. Keep final company evaluation separate from public development data. If only genuine queries are available, measure genuine rejection and workflow behavior without claiming forgery-acceptance rates. Any imitation collection must document provenance and distinguish human imitations from ordinary other-writer signatures and digital manipulations.
 
 Heavy overlap can leave too little evidence for either a person or a model. Weighting can discard the very details that reveal imitation; predicted masks can confuse handwriting with stamps; restoration can alter identity-bearing content. Raw images will be retained, uncertain cases referred for review and restoration judged by downstream verification as well as content-preservation diagnostics.
 
@@ -261,7 +261,7 @@ https://gpds.ulpgc.es/downloadnew/download.htm
 
 ## Development roadmap
 
-**Selected path (second review, 11 November 2026).** The first prototype starts with a conservative, inspectable pipeline; implementation has begun, but milestone completion is not yet verified:
+**Selected path (second review, 11 November 2026).** The first prototype starts with a conservative, inspectable pipeline. The cleaning and classical-comparison milestones (M1a to M2a.2) are implemented and tested on synthetic fixtures; nothing has yet been evaluated on real signatures:
 
 - a classical colour-separation stamp cleaner that never inpaints, records every change, and reports "no stamp detected" rather than "clean", because colour cannot reveal a black or same-ink stamp;
 - comparison built from components with explicit permissive terms (generic pretrained patch features first), with the score shown to a reviewer only if it passes a benchmark gate against a classical baseline;
@@ -269,20 +269,22 @@ https://gpds.ulpgc.es/downloadnew/download.htm
 
 This replaces two choices of the [initial review](docs/research/INITIAL_REVIEW.md): frozen SigNet features [2](#ref-2) are now a research benchmark reference only, because their published weights were trained on data restricted to non-commercial use, and fixed window scoring is dropped in favour of local patch matching. Later research milestones test two hypotheses (reliability-aware local comparison; provenance-based review) and add training only where a measured failure justifies it. Reasons, alternatives and sources are in the [second review](docs/research/SECOND_REVIEW.md).
 
-Milestones, permissions, the evaluation protocol and stop criteria are in the [living build plan](BUILD_PLAN.md). The current task is a tested cleaning/provenance command on synthetic fixtures (M1a); its completion remains unverified. The [older detailed plan](docs/superpowers/plans/2026-11-10-customer-verification.md) is context, not a requirement to implement every experiment. See [starting instructions](docs/GETTING_STARTED.md).
+Milestones, permissions, the evaluation protocol and stop criteria are in the [living build plan](BUILD_PLAN.md). The next milestone is M2b: the first benchmark on permitted real signatures.
 
 ## Development progress and evidence
 
 | Checkpoint | Current state | Evidence |
 |---|---|---|
 | Literature foundation | Study material prepared | [Nine-paper matrix](literature/literature_matrix.csv), [notes](literature/notes/README.md) and [glossary](literature/notes/GLOSSARY.md) |
-| Prototype planning | Flexible plan and coordination instructions prepared | [Build plan](BUILD_PLAN.md) and [Claude workflow](docs/CLAUDE_WORKFLOW.md) |
+| Prototype planning | Staged roadmap with milestones, gates and stop criteria | [Build plan](BUILD_PLAN.md) |
 | Architecture/feasibility review | Completed 11 November 2026 (planning only, nothing measured) | [Initial review](docs/research/INITIAL_REVIEW.md) |
 | Second review and full roadmap | Completed 11 November 2026 (planning only, nothing measured) | [Second review with evidence register](docs/research/SECOND_REVIEW.md); roadmap in the [build plan](BUILD_PLAN.md) |
-| First cleaning implementation (M1a) | In progress; completion and checks not yet verified | No accuracy or runtime claim is made |
-| Working comparison prototype | Planned | No verifier performance result is claimed |
+| Stamp cleaning with provenance (M1a, M1a.1) | Implemented; tested on fictional synthetic fixtures | No accuracy or runtime claim is made |
+| Cleaner comparison (M1b, experimental) | Implemented on synthetic fixtures; damage in some results labelled cleaned is still under investigation | Documented limitation |
+| Classical comparison baseline (M2a to M2a.2) | Implemented: normalisation, reference enrolment, comparison and low-evidence handling; tested on synthetic fixtures | Tests are not accuracy |
+| Benchmark on permitted real signatures (M2b) | Next | No verifier performance result is claimed |
 
-Each meaningful milestone will document the practical problem solved, implementation decisions, reproducible checks and remaining limitations, with shareable visual examples or a demonstration where useful. Measured results will include their evaluation conditions. [Session reports](docs/SESSION_LOG.md) preserve the development record; this public overview separates intended features from implemented and validated work.
+Each meaningful milestone will document the practical problem solved, implementation decisions, reproducible checks and remaining limitations, with shareable visual examples or a demonstration where useful. Measured results will include their evaluation conditions.this public overview separates intended features from implemented and validated work.
 
 ## Literature and project structure
 
@@ -290,7 +292,6 @@ Each meaningful milestone will document the practical problem solved, implementa
 - [Reading notes](literature/notes/README.md)
 - [Glossary](literature/notes/GLOSSARY.md)
 - [Literature matrix](literature/literature_matrix.csv)
-- [October academic preparation record](PLAN.md)
 - [Historical proposal files](proposal/README.md)
 
 ```text
@@ -298,10 +299,10 @@ docs/           Current implementation design, plan and starting guide
 literature/     Nine-paper study, notes, glossary and evidence matrix
 proposal/       Historical bilingual proposal and original illustrations
 data/           Public/synthetic guidance; company inputs stay local
-src/            Planned data, cleaning, verification and evaluation modules
+src/            Cleaning, provenance and classical comparison (package osv); later modules planned
 experiments/    Configuration and result scaffolding
 models/         Local model storage guidance
-tests/          Validation scaffolding
+tests/          Automated tests on synthetic fixtures
 ```
 
-Folder scaffolding is not implemented functionality. Company signatures, identifying reference embeddings and private model artifacts are excluded from public sharing. The portfolio demonstration will use fictional or otherwise shareable examples. Publisher PDFs remain local where redistribution permission is unverified; the paper index provides source links.
+Folders marked as scaffolding are not yet implemented functionality. Company signatures, identifying reference embeddings and private model artifacts are excluded from public sharing. The portfolio demonstration will use fictional or otherwise shareable examples. Publisher PDFs remain local where redistribution permission is unverified; the paper index provides source links.
