@@ -7,10 +7,17 @@
     python -m osv.cli compare-cleaners --split dev|heldout --out <dir>
     python -m osv.cli make-demo-case --out <dir>
     python -m osv.cli compare-case <manifest.json> --out <dir>
+    python -m osv.cli dataset-manifest <root> --dataset-info <info.json> --out <manifest.local.json>
+    python -m osv.cli benchmark-freeze --manifest <manifest.local.json> --seed N --out-dir <dir> [--k 3] [--impostors 27]
+    python -m osv.cli benchmark --config <config.json> --out <dir> [--workers N]
 
 ``compare-case`` (M2a) is an unvalidated classical baseline for diagnostics: the query always
 passes through the cleaner named in the manifest; there is no option to compare a raw query.
 It prints distances, never a genuine/forged verdict or probability.
+
+``benchmark`` (M2b) scores genuine against random-impostor comparisons on development and
+validation writers from frozen, hashed manifests. It refuses the final test partition. Run it
+from the repository root; paths in the configuration are relative to the working directory.
 
 ``--method`` defaults to ``chroma`` (the M1a/M1a.1 baseline); ``optical-density`` is the M1b
 experiment. The method is chosen by the caller, never per image.
@@ -217,6 +224,53 @@ def cmd_compare_case(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_dataset_manifest(args: argparse.Namespace) -> int:
+    from osv.datasets.signature_folder import build_manifest, scan, write_json
+
+    out = Path(args.out)
+    if out.exists():
+        raise FileExistsError(f"{out} exists; refusing to overwrite a manifest")
+    info = json.loads(Path(args.dataset_info).read_text(encoding="utf-8"))
+    manifest = build_manifest(scan(args.root), info)
+    sha = write_json(out, manifest)
+    print(json.dumps(manifest["counts"], indent=1, sort_keys=True))
+    print(f"writer groups tied by cross-writer duplicates: {sum(len(g) > 1 for g in manifest['writer_groups'])}")
+    print(f"wrote {out}\nmanifest sha256 (canonical): {sha}")
+    return 0
+
+
+def cmd_benchmark_freeze(args: argparse.Namespace) -> int:
+    from osv.datasets.signature_folder import check_splits, make_splits, read_json, write_json
+    from osv.evaluation.protocol import build_protocol, check_protocol
+
+    out_dir = Path(args.out_dir)
+    targets = (out_dir / "splits.local.json", out_dir / "protocol.local.json")
+    for t in targets:
+        if t.exists():
+            raise FileExistsError(f"{t} exists; frozen files are never overwritten")
+    manifest = read_json(args.manifest, args.manifest_sha256)
+    fractions = tuple(float(x) for x in args.fractions.split(","))
+    splits = make_splits(manifest, args.seed, fractions, min_images=args.k + 1)
+    check_splits(splits, manifest)
+    protocol = build_protocol(manifest, splits, args.k, args.impostors, args.seed)
+    check_protocol(protocol, splits, manifest)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    print(f"split counts: {splits['counts']}; left out: {len(splits['writers_left_out'])}")
+    print(f"protocol counts: {json.dumps(protocol['counts'])}")
+    print(f"splits sha256 (canonical): {write_json(targets[0], splits)}")
+    print(f"protocol sha256 (canonical): {write_json(targets[1], protocol)}")
+    return 0
+
+
+def cmd_benchmark(args: argparse.Namespace) -> int:
+    from osv.evaluation.benchmark import render_table, run_benchmark
+
+    result = run_benchmark(args.config, args.out, workers=args.workers, limit_writers=args.limit_writers)
+    print(render_table(result))
+    print(f"wrote {args.out}/results.json, validation_table.md, comparisons_<partition>.local.jsonl")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(prog="osv", description="Occlusion-aware signature verification tools (M1a/M1b/M2a baseline).")
     sub = ap.add_subparsers(dest="command", required=True)
@@ -259,6 +313,29 @@ def build_parser() -> argparse.ArgumentParser:
     v.add_argument("manifest")
     v.add_argument("--out", required=True, help="output directory (must be new or empty)")
     v.set_defaults(func=cmd_compare_case)
+
+    dm = sub.add_parser("dataset-manifest", help="scan a folder-per-writer dataset into a local manifest (no scores)")
+    dm.add_argument("root")
+    dm.add_argument("--dataset-info", required=True, help="JSON with source, version, licence and attribution")
+    dm.add_argument("--out", required=True, help="manifest file to create (keep it local: *.local.json)")
+    dm.set_defaults(func=cmd_dataset_manifest)
+
+    bf = sub.add_parser("benchmark-freeze", help="freeze writer splits and the reference/query protocol (no scores)")
+    bf.add_argument("--manifest", required=True)
+    bf.add_argument("--manifest-sha256", default=None, help="expected canonical hash of the manifest")
+    bf.add_argument("--seed", type=int, required=True)
+    bf.add_argument("--k", type=int, default=3, help="genuine references per writer (default 3)")
+    bf.add_argument("--impostors", type=int, default=27, help="random-impostor queries per claimed writer")
+    bf.add_argument("--fractions", default="0.5,0.25,0.25", help="development,validation,test writer shares")
+    bf.add_argument("--out-dir", required=True)
+    bf.set_defaults(func=cmd_benchmark_freeze)
+
+    b = sub.add_parser("benchmark", help="clean benchmark on development and validation writers (final test refused)")
+    b.add_argument("--config", required=True)
+    b.add_argument("--out", required=True, help="output directory (must be new or empty)")
+    b.add_argument("--workers", type=int, default=1)
+    b.add_argument("--limit-writers", type=int, default=None, help="smoke test only: first N writers per partition")
+    b.set_defaults(func=cmd_benchmark)
     return ap
 
 

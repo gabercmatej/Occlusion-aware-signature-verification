@@ -12,6 +12,9 @@ data/company/*
 *.local.json
 data/cases/*
 
+# Public datasets stay local (licence terms, biometric content); only notes are tracked on request.
+data/public/*
+
 # Large/local artifacts.
 models/*
 !models/README.md

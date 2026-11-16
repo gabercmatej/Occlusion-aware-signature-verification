@@ -1,0 +1,34 @@
+{
+ "experiment_id": "E004",
+ "title": "M2b clean benchmark: classical floor, genuine vs random impostor, unseen writers",
+ "claim_limit": "Genuine signatures and random impostors only; no skilled-forgery or stamp-robustness claim. Final test not scored.",
+ "dataset": {
+  "name": "Offline Handwriting Signature",
+  "version": 1,
+  "doi": "10.17632/ghvhwcpkbg.1",
+  "licence": "CC BY 4.0"
+ },
+ "encoder": "classical_grid",
+ "cleaner_method": "chroma",
+ "partitions": ["development", "validation"],
+ "primary_score": "excluding_query_flagged",
+ "paths": {
+  "dataset_root": "data/public/mendeley_ohs_v1/images",
+  "manifest": "data/public/mendeley_ohs_v1/manifest.local.json",
+  "splits": "data/public/mendeley_ohs_v1/splits.local.json",
+  "protocol": "data/public/mendeley_ohs_v1/protocol.local.json"
+ },
+ "sha256": {
+  "manifest": "fa396b0a829776b1b5d36eb9b7a437b258f734b0d8da5b8538f2f858183feed7",
+  "splits": "0dca795cdcf80584143d8ee9e1c933692127c92bd7ff8dfd07852c0864c2c85b",
+  "protocol": "fc2ed8e79236ee6c59d2e109cdf489d7fb0fa04a2a29d2fccf7d069e6ffe3a64"
+ },
+ "frozen": {
+  "seed": 20261116,
+  "k_references": 3,
+  "n_impostors_per_writer": 27,
+  "fractions": [0.5, 0.25, 0.25],
+  "writers": {"development": 204, "validation": 102, "test": 101, "left_out": 13}
+ },
+ "bootstrap": {"n_resamples": 2000, "seed": 20261116, "level": 0.95}
+}
