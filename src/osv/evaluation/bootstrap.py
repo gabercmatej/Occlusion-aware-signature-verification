@@ -126,12 +126,19 @@ def writer_bootstrap(scores: WriterScores, metrics: Mapping[str, Metric], n_resa
 
 
 def paired_writer_bootstrap(scores_a: WriterScores, scores_b: WriterScores, metrics: Mapping[str, Metric],
-                            n_resamples: int = 2000, seed: int = 0, level: float = 0.95) -> dict:
+                            n_resamples: int = 2000, seed: int = 0, level: float = 0.95,
+                            metrics_b: Mapping[str, Metric] | None = None) -> dict:
     """Interval on ``metric(B) - metric(A)`` with the same resampled writers for both systems.
 
     Both systems must have been scored on the same claimed writers and the same number of
     attempted comparisons per writer (same protocol); anything else is refused.
+
+    ``metrics_b`` (optional, same names as ``metrics``) evaluates system B with its own metric
+    functions, for example FAR at B's own development-selected threshold while A uses A's.
     """
+    metrics_b = metrics if metrics_b is None else metrics_b
+    if set(metrics_b) != set(metrics):
+        raise ValueError("metrics_b must name the same metrics as metrics")
     writers = sorted(scores_a)
     if writers != sorted(scores_b):
         raise ValueError("paired comparison needs the same claimed writers in both systems")
@@ -146,7 +153,7 @@ def paired_writer_bootstrap(scores_a: WriterScores, scores_b: WriterScores, metr
     full = range(n)
     out = {}
     point_a = {k: m(*_pool(pa, full)) for k, m in metrics.items()}
-    point_b = {k: m(*_pool(pb, full)) for k, m in metrics.items()}
+    point_b = {k: metrics_b[k](*_pool(pb, full)) for k in metrics}
     rng = np.random.default_rng(seed)
     diffs: dict[str, list[float]] = {k: [] for k in metrics}
     undefined = {k: 0 for k in metrics}
@@ -154,7 +161,7 @@ def paired_writer_bootstrap(scores_a: WriterScores, scores_b: WriterScores, metr
         idx = rng.integers(0, n, n)
         a, b = _pool(pa, idx), _pool(pb, idx)
         for k, m in metrics.items():
-            va, vb = m(*a), m(*b)
+            va, vb = m(*a), metrics_b[k](*b)
             if va is None or vb is None:
                 undefined[k] += 1
             else:

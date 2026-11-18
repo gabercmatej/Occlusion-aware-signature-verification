@@ -230,6 +230,9 @@ def check_partitions(partitions) -> None:
 def run_benchmark(config_path, out_dir, workers: int = 1, base_dir=".", limit_writers: int | None = None) -> dict:
     """Score the configured partitions and write results; ``limit_writers`` is for smoke tests only."""
     config = json.loads(Path(config_path).read_text(encoding="utf-8"))
+    if config.get("evaluation_only") or "kind" in config:
+        raise ValueError("this is an evaluation-only control configuration; the benchmark runner always cleans "
+                         "queries and does not run it (use the evaluation-control command)")
     check_partitions(config["partitions"])
     if config["encoder"] not in ENCODERS:
         raise ValueError(f"unknown encoder {config['encoder']!r}; available: {tuple(ENCODERS)}")

@@ -10,6 +10,7 @@
     python -m osv.cli dataset-manifest <root> --dataset-info <info.json> --out <manifest.local.json>
     python -m osv.cli benchmark-freeze --manifest <manifest.local.json> --seed N --out-dir <dir> [--k 3] [--impostors 27]
     python -m osv.cli benchmark --config <config.json> --out <dir> [--workers N]
+    python -m osv.cli evaluation-control --config <control-config.json> --out <dir> [--workers N]
 
 ``compare-case`` (M2a) is an unvalidated classical baseline for diagnostics: the query always
 passes through the cleaner named in the manifest; there is no option to compare a raw query.
@@ -18,6 +19,12 @@ It prints distances, never a genuine/forged verdict or probability.
 ``benchmark`` (M2b) scores genuine against random-impostor comparisons on development and
 validation writers from frozen, hashed manifests. It refuses the final test partition. Run it
 from the repository root; paths in the configuration are relative to the working directory.
+
+``evaluation-control`` (M2b.1) is EVALUATION ONLY: on the frozen benchmark comparisons it also
+scores original images without the cleaner, to measure what cleaning and masking change. It
+accepts only a configuration marked as an evaluation-only control that reuses frozen benchmark
+inputs unchanged; its outputs are labelled as not being product results. It adds no cleaner and
+no option to any product command.
 
 ``--method`` defaults to ``chroma`` (the M1a/M1a.1 baseline); ``optical-density`` is the M1b
 experiment. The method is chosen by the caller, never per image.
@@ -271,6 +278,15 @@ def cmd_benchmark(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_evaluation_control(args: argparse.Namespace) -> int:
+    from osv.evaluation.control import render_table, run_control
+
+    result = run_control(args.config, args.out, workers=args.workers, limit_writers=args.limit_writers)
+    print(render_table(result))
+    print(f"wrote {args.out}/results.json, control_table.md, control_comparisons_<partition>.local.jsonl")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(prog="osv", description="Occlusion-aware signature verification tools (M1a/M1b/M2a baseline).")
     sub = ap.add_subparsers(dest="command", required=True)
@@ -336,6 +352,14 @@ def build_parser() -> argparse.ArgumentParser:
     b.add_argument("--workers", type=int, default=1)
     b.add_argument("--limit-writers", type=int, default=None, help="smoke test only: first N writers per partition")
     b.set_defaults(func=cmd_benchmark)
+
+    ec = sub.add_parser("evaluation-control",
+                        help="EVALUATION ONLY: original-image control vs cleaned arms on frozen benchmark comparisons")
+    ec.add_argument("--config", required=True, help="an evaluation-only control configuration")
+    ec.add_argument("--out", required=True, help="output directory (must be new or empty)")
+    ec.add_argument("--workers", type=int, default=1)
+    ec.add_argument("--limit-writers", type=int, default=None, help="smoke test only: first N writers per partition")
+    ec.set_defaults(func=cmd_evaluation_control)
     return ap
 
 
